@@ -1,0 +1,21 @@
+{
+  "name": "Amusement Park Travel",
+  "title": "AmusementParkTravel.com",
+  "description": "The world's most comprehensive amusement park travel planning resource. Expert guides, interactive tools, and insider tips for theme parks worldwide.",
+  "url": "https://amusementparktravel.com",
+  "author": "Amusement Park Travel",
+  "email": "hello@amusementparktravel.com",
+  "logo": "/assets/images/logo.svg",
+  "ogImage": "/assets/images/og/default.jpg",
+  "social": {
+    "twitter": "@parktravel",
+    "instagram": "@amusementparktravel",
+    "facebook": "amusementparktravel",
+    "youtube": "@amusementparktravel"
+  },
+  "analytics": {
+    "enabled": false
+  },
+  "copyright": "2025 AmusementParkTravel.com. All rights reserved.",
+  "buildTime": "2025"
+}

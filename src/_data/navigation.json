@@ -1,0 +1,64 @@
+{
+  "main": [
+    {
+      "label": "Parks",
+      "url": "/parks/",
+      "children": [
+        { "label": "North America", "url": "/parks/north-america/" },
+        { "label": "Europe", "url": "/parks/europe/" },
+        { "label": "Asia", "url": "/parks/asia/" },
+        { "label": "South America", "url": "/parks/south-america/" },
+        { "label": "Middle East", "url": "/parks/middle-east/" }
+      ]
+    },
+    {
+      "label": "Guides",
+      "url": "/guides/",
+      "children": [
+        { "label": "First-Timer Guides", "url": "/guides/first-timers/" },
+        { "label": "Budget Tips", "url": "/guides/budget/" },
+        { "label": "Family Planning", "url": "/guides/families/" },
+        { "label": "Seasonal Events", "url": "/guides/seasonal/" }
+      ]
+    },
+    {
+      "label": "Tools",
+      "url": "/tools/",
+      "children": [
+        { "label": "Budget Calculator", "url": "/tools/budget-calculator/" },
+        { "label": "Crowd Calendar", "url": "/tools/crowd-calendar/" },
+        { "label": "Height Checker", "url": "/tools/height-checker/" }
+      ]
+    },
+    {
+      "label": "Compare",
+      "url": "/comparisons/"
+    }
+  ],
+  "footer": {
+    "parks": [
+      { "label": "Universal Epic Universe", "url": "/parks/north-america/universal-epic-universe/" },
+      { "label": "Six Flags Qiddiya", "url": "/parks/middle-east/six-flags-qiddiya/" },
+      { "label": "Phantasialand", "url": "/parks/europe/phantasialand/" },
+      { "label": "Beto Carrero World", "url": "/parks/south-america/beto-carrero-world/" }
+    ],
+    "tools": [
+      { "label": "Budget Calculator", "url": "/tools/budget-calculator/" },
+      { "label": "Crowd Calendar", "url": "/tools/crowd-calendar/" },
+      { "label": "Height Checker", "url": "/tools/height-checker/" },
+      { "label": "Express Pass ROI", "url": "/tools/express-pass-calculator/" }
+    ],
+    "company": [
+      { "label": "About Us", "url": "/about/" },
+      { "label": "Contact", "url": "/contact/" },
+      { "label": "Privacy Policy", "url": "/privacy/" },
+      { "label": "Terms of Use", "url": "/terms/" }
+    ],
+    "resources": [
+      { "label": "Rain Policies Guide", "url": "/guides/rain-policies/" },
+      { "label": "Best Time to Visit", "url": "/guides/best-time-to-visit/" },
+      { "label": "Travel Tips", "url": "/guides/travel-tips/" },
+      { "label": "RSS Feed", "url": "/feeds/rss.xml" }
+    ]
+  }
+}

@@ -1,0 +1,186 @@
+---
+layout: base.njk
+---
+
+{# Breadcrumbs #}
+<div class="bg-white border-b">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/parks/">Parks</a>
+      <span>/</span>
+      <a href="/parks/{{ park.region }}/">{{ parks.regions[park.region].name }}</a>
+      <span>/</span>
+      <span aria-current="page">{{ park.name }}</span>
+    </nav>
+  </div>
+</div>
+
+{# Hero Section #}
+<section class="relative bg-gray-900 text-white">
+  {% if park.heroImage %}
+  <div class="absolute inset-0">
+    <img src="{{ park.heroImage }}" alt="{{ park.name }}" class="w-full h-full object-cover opacity-40">
+  </div>
+  {% else %}
+  <div class="absolute inset-0 bg-gradient-to-br from-primary-600 to-accent-600 opacity-90"></div>
+  {% endif %}
+  <div class="relative container py-16 md:py-24">
+    <div class="max-w-3xl">
+      {% if park.new %}
+        <span class="inline-block px-3 py-1 bg-secondary-500 text-white text-sm font-bold rounded-full mb-4">NEW PARK</span>
+      {% endif %}
+      <h1 class="text-fluid-4xl font-bold mb-4">{{ park.name }}</h1>
+      <p class="text-xl opacity-90 mb-6">{{ park.city }}, {% if park.state %}{{ park.state }}, {% endif %}{{ park.country }}</p>
+
+      {# Quick Stats #}
+      <div class="flex flex-wrap gap-4 text-sm">
+        {% if park.rating %}
+        <div class="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
+          <svg class="w-4 h-4 text-secondary-400" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
+          </svg>
+          <span>{{ park.rating }} ({{ park.reviewCount }} reviews)</span>
+        </div>
+        {% endif %}
+        <div class="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
+          <span>{{ park.priceRange }}</span>
+        </div>
+        <div class="flex items-center gap-1 bg-white/20 px-3 py-1 rounded-full">
+          <span>{{ park.type }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{# Main Content #}
+<div class="container py-8 md:py-12">
+  <div class="lg:grid lg:grid-cols-3 lg:gap-12">
+    {# Main Content #}
+    <div class="lg:col-span-2">
+      {# Quick Facts Box #}
+      <aside class="quick-facts mb-8">
+        <h4 class="quick-facts__title">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
+          </svg>
+          Quick Facts
+        </h4>
+        <dl class="quick-facts__list">
+          {% if park.opened %}
+          <div class="quick-fact">
+            <dt class="quick-fact-label">Opened</dt>
+            <dd class="quick-fact-value">{{ park.opened | dateFormat }}</dd>
+          </div>
+          {% endif %}
+          {% if park.ticketPrice %}
+          <div class="quick-fact">
+            <dt class="quick-fact-label">Ticket Price</dt>
+            <dd class="quick-fact-value">From {{ park.ticketPrice.adult }}</dd>
+          </div>
+          {% endif %}
+          {% if park.parkSize %}
+          <div class="quick-fact">
+            <dt class="quick-fact-label">Park Size</dt>
+            <dd class="quick-fact-value">{{ park.parkSize }}</dd>
+          </div>
+          {% endif %}
+          {% if park.bestFor %}
+          <div class="quick-fact">
+            <dt class="quick-fact-label">Best For</dt>
+            <dd class="quick-fact-value">{{ park.bestFor | join(", ") }}</dd>
+          </div>
+          {% endif %}
+        </dl>
+      </aside>
+
+      {# Article Content #}
+      <article class="prose prose-lg max-w-none">
+        {{ content | safe }}
+      </article>
+    </div>
+
+    {# Sidebar #}
+    <aside class="lg:col-span-1 mt-8 lg:mt-0">
+      {# Contact Info #}
+      <div class="bg-white rounded-xl shadow-card p-6 mb-6">
+        <h3 class="font-bold text-lg mb-4">Contact & Links</h3>
+        <ul class="space-y-3 text-sm">
+          {% if park.website %}
+          <li>
+            <a href="{{ park.website }}" target="_blank" rel="noopener" class="flex items-center gap-2 text-accent-600 hover:text-accent-700">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+              </svg>
+              Official Website
+            </a>
+          </li>
+          {% endif %}
+          {% if park.phone %}
+          <li>
+            <a href="tel:{{ park.phone | replace(' ', '') | replace('-', '') | replace('(', '') | replace(')', '') }}" class="flex items-center gap-2 text-gray-600 hover:text-gray-900">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              {{ park.phone }}
+            </a>
+          </li>
+          {% endif %}
+          {% if park.address %}
+          <li class="flex items-start gap-2 text-gray-600">
+            <svg class="w-4 h-4 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+            </svg>
+            <span>{{ park.address }}</span>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+
+      {# CTA Box #}
+      <div class="bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl p-6 text-white">
+        <h3 class="font-bold text-lg mb-2">Plan Your Visit</h3>
+        <p class="text-sm opacity-90 mb-4">Use our free tools to calculate costs and plan the perfect trip.</p>
+        <a href="/tools/budget-calculator/" class="btn bg-white text-primary-600 hover:bg-gray-100 w-full">
+          Budget Calculator
+        </a>
+      </div>
+    </aside>
+  </div>
+</div>
+
+{# JSON-LD for Park #}
+{% set parkSchema %}
+{
+  "@context": "https://schema.org",
+  "@type": "TouristAttraction",
+  "name": "{{ park.name }}",
+  "description": "{{ park.description or description }}",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "{{ park.city }}",
+    {% if park.state %}"addressRegion": "{{ park.state }}",{% endif %}
+    "addressCountry": "{{ park.country }}"
+  },
+  {% if park.coordinates %}
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": {{ park.coordinates.lat }},
+    "longitude": {{ park.coordinates.lng }}
+  },
+  {% endif %}
+  "priceRange": "{{ park.priceRange }}",
+  {% if park.rating %}
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ park.rating }}",
+    "reviewCount": "{{ park.reviewCount }}"
+  },
+  {% endif %}
+  "url": "{{ park.website }}"
+}
+{% endset %}
+<script type="application/ld+json">{{ parkSchema | safe }}</script>

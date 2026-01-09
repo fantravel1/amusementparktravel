@@ -1,0 +1,35 @@
+---
+permalink: /feeds/rss.xml
+eleventyExcludeFromCollections: true
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ site.name }}</title>
+    <link>{{ site.url }}</link>
+    <description>{{ site.description }}</description>
+    <language>en-us</language>
+    <lastBuildDate>{{ page.date | dateFormat }}</lastBuildDate>
+    <atom:link href="{{ site.url }}/feeds/rss.xml" rel="self" type="application/rss+xml"/>
+
+    {%- for park in collections.allParks | limit(20) %}
+    <item>
+      <title>{{ park.data.title }}</title>
+      <link>{{ site.url }}{{ park.url }}</link>
+      <description>{{ park.data.description | escape }}</description>
+      <pubDate>{{ park.data.lastUpdated or park.date | dateFormat }}</pubDate>
+      <guid isPermaLink="true">{{ site.url }}{{ park.url }}</guid>
+    </item>
+    {%- endfor %}
+
+    {%- for guide in collections.guides | limit(20) %}
+    <item>
+      <title>{{ guide.data.title }}</title>
+      <link>{{ site.url }}{{ guide.url }}</link>
+      <description>{{ guide.data.description | escape }}</description>
+      <pubDate>{{ guide.data.date | dateFormat }}</pubDate>
+      <guid isPermaLink="true">{{ site.url }}{{ guide.url }}</guid>
+    </item>
+    {%- endfor %}
+  </channel>
+</rss>

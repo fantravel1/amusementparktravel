@@ -1,0 +1,125 @@
+{
+  "featured": [
+    {
+      "id": "universal-epic-universe",
+      "name": "Universal Epic Universe",
+      "slug": "universal-epic-universe",
+      "region": "north-america",
+      "country": "USA",
+      "state": "Florida",
+      "city": "Orlando",
+      "address": "1001 Epic Blvd., Orlando, FL 32819",
+      "coordinates": { "lat": 28.4283, "lng": -81.4483 },
+      "opened": "2025-05-22",
+      "parkSize": "110 acres themed (750 total)",
+      "website": "https://www.universalorlando.com/epicuniverse",
+      "phone": "(407) 363-8000",
+      "priceRange": "$$$",
+      "ticketPrice": { "adult": "$139-$209", "child": "$134-$199" },
+      "rating": 4.9,
+      "reviewCount": 1250,
+      "type": "Theme Park",
+      "featured": true,
+      "new": true,
+      "description": "Universal's newest and most ambitious theme park featuring five immersive worlds including Super Nintendo World, the Wizarding World's Ministry of Magic, and Dark Universe.",
+      "highlights": ["Super Nintendo World", "Ministry of Magic", "Dark Universe", "Stardust Racers"],
+      "bestFor": ["Harry Potter fans", "Thrill seekers", "Nintendo fans"],
+      "image": "/assets/images/parks/epic-universe.jpg"
+    },
+    {
+      "id": "six-flags-qiddiya",
+      "name": "Six Flags Qiddiya City",
+      "slug": "six-flags-qiddiya",
+      "region": "middle-east",
+      "country": "Saudi Arabia",
+      "city": "Riyadh Province",
+      "address": "Qiddiya City, 45 km from Riyadh",
+      "coordinates": { "lat": 24.4, "lng": 46.4 },
+      "opened": "2025-12-31",
+      "parkSize": "79 acres",
+      "website": "https://www.sixflagsqiddiyacity.com",
+      "priceRange": "$$",
+      "ticketPrice": { "adult": "SAR 325 (~$87)", "child": "SAR 275 (~$74)" },
+      "rating": 4.8,
+      "reviewCount": 450,
+      "type": "Theme Park",
+      "featured": true,
+      "new": true,
+      "description": "Home to 5 world records including the world's tallest, fastest, and longest roller coaster - Falcon's Flight at 640ft and 155mph.",
+      "highlights": ["Falcon's Flight (World Records)", "Sirocco Tower", "Colossus hybrid coaster"],
+      "bestFor": ["Thrill seekers", "Record hunters", "Adventure travelers"],
+      "image": "/assets/images/parks/six-flags-qiddiya.jpg"
+    },
+    {
+      "id": "phantasialand",
+      "name": "Phantasialand",
+      "slug": "phantasialand",
+      "region": "europe",
+      "country": "Germany",
+      "city": "Bruhl",
+      "address": "Berggeiststrasse 31-41, 50321 Bruhl, Germany",
+      "coordinates": { "lat": 50.8015, "lng": 6.8764 },
+      "opened": "1967-04-30",
+      "parkSize": "69 acres",
+      "website": "https://www.phantasialand.de/en",
+      "phone": "+49 (0)2232 36-600",
+      "priceRange": "$$",
+      "ticketPrice": { "adult": "47-78 EUR", "child": "45-60 EUR" },
+      "rating": 4.8,
+      "reviewCount": 8500,
+      "type": "Theme Park",
+      "featured": true,
+      "description": "Germany's hidden gem featuring world-class theming that rivals Disney, with unique attractions like F.L.Y. (world's first launched flying coaster) and Taron.",
+      "highlights": ["F.L.Y.", "Taron", "Chiapas", "Wintertraum event"],
+      "bestFor": ["Theming enthusiasts", "Coaster fans", "European travelers"],
+      "image": "/assets/images/parks/phantasialand.jpg"
+    },
+    {
+      "id": "beto-carrero-world",
+      "name": "Beto Carrero World",
+      "slug": "beto-carrero-world",
+      "region": "south-america",
+      "country": "Brazil",
+      "city": "Penha",
+      "state": "Santa Catarina",
+      "address": "Rodovia Beto Carrero, Penha, SC, 88385-000, Brazil",
+      "coordinates": { "lat": -26.8017, "lng": -48.6177 },
+      "opened": "1991-12-28",
+      "parkSize": "14 km² (Latin America's largest)",
+      "website": "https://www.betocarrero.com.br",
+      "phone": "+55 47 3261-2222",
+      "priceRange": "$$",
+      "ticketPrice": { "adult": "R$350 (~$58)", "child": "R$109-170 online" },
+      "rating": 4.6,
+      "reviewCount": 12000,
+      "type": "Theme Park",
+      "featured": true,
+      "description": "Latin America's largest theme park spanning 14 km² with seven themed areas including Madagascar, Hot Wheels, and traditional Brazilian attractions.",
+      "highlights": ["FireWhip coaster", "Big Tower", "Madagascar area", "Hot Wheels"],
+      "bestFor": ["Families", "DreamWorks fans", "South American travelers"],
+      "image": "/assets/images/parks/beto-carrero.jpg"
+    }
+  ],
+  "regions": {
+    "north-america": {
+      "name": "North America",
+      "description": "Home to the world's most famous theme parks including Walt Disney World, Universal Orlando, and dozens of regional favorites."
+    },
+    "europe": {
+      "name": "Europe",
+      "description": "Discover incredible theming at parks like Phantasialand, Europa-Park, and Disneyland Paris."
+    },
+    "asia": {
+      "name": "Asia",
+      "description": "Experience cutting-edge attractions in Japan, South Korea, and China's rapidly growing theme park industry."
+    },
+    "south-america": {
+      "name": "South America",
+      "description": "Explore Latin America's largest parks including Beto Carrero World in Brazil."
+    },
+    "middle-east": {
+      "name": "Middle East",
+      "description": "The world's newest theme park frontier with record-breaking attractions in Saudi Arabia and UAE."
+    }
+  }
+}
