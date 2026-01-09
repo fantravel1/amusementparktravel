@@ -1,0 +1,83 @@
+<header class="nav">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="/" class="nav-logo">
+      <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" fill="none"/>
+        <path d="M8 20 L12 8 L16 16 L20 8 L24 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="16" cy="22" r="2" fill="currentColor"/>
+      </svg>
+      <span class="hidden sm:inline">AmusementParkTravel</span>
+      <span class="sm:hidden">APT</span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-links" aria-label="Main navigation">
+      {% for item in navigation.main %}
+        <a href="{{ item.url }}" class="nav-link {% if page.url == item.url %}active{% endif %}">
+          {{ item.label }}
+        </a>
+      {% endfor %}
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-toggle"
+      class="md:hidden p-2 text-gray-600 hover:text-primary-600"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+      <a href="/" class="nav-logo">
+        <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M8 20 L12 8 L16 16 L20 8 L24 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="16" cy="22" r="2" fill="currentColor"/>
+        </svg>
+        <span>AmusementParkTravel</span>
+      </a>
+      <button
+        id="mobile-menu-close"
+        class="p-2 text-gray-600"
+        aria-label="Close menu"
+        onclick="document.getElementById('mobile-menu').classList.remove('open'); document.body.classList.remove('overflow-hidden');"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="p-4 space-y-4" aria-label="Mobile navigation">
+      {% for item in navigation.main %}
+        <div>
+          <a
+            href="{{ item.url }}"
+            class="block py-2 text-lg font-semibold text-gray-900 hover:text-primary-600"
+          >
+            {{ item.label }}
+          </a>
+          {% if item.children %}
+            <div class="pl-4 space-y-2 mt-2">
+              {% for child in item.children %}
+                <a
+                  href="{{ child.url }}"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  {{ child.label }}
+                </a>
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </nav>
+  </div>
+</header>

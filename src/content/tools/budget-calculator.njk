@@ -1,0 +1,432 @@
+---
+layout: base.njk
+title: "Orlando Budget Calculator - Disney + Universal + SeaWorld"
+description: "Calculate your total Orlando theme park vacation cost. The only tool that combines Disney World, Universal Orlando, and SeaWorld for comprehensive trip budgeting."
+permalink: /tools/budget-calculator/
+---
+
+{# Breadcrumbs #}
+<div class="bg-white border-b">
+  <div class="container">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/tools/">Tools</a>
+      <span>/</span>
+      <span aria-current="page">Budget Calculator</span>
+    </nav>
+  </div>
+</div>
+
+{# Page Header #}
+<section class="bg-gradient-to-br from-primary-600 to-primary-500 text-white py-12">
+  <div class="container text-center">
+    <span class="inline-block px-3 py-1 bg-secondary-500 text-white text-sm font-bold rounded-full mb-4">FIRST-TO-MARKET TOOL</span>
+    <h1 class="text-fluid-4xl font-bold mb-4">Orlando Budget Calculator</h1>
+    <p class="text-xl opacity-90 max-w-2xl mx-auto">
+      The only comprehensive tool that calculates Disney + Universal + SeaWorld combined trip costs
+    </p>
+  </div>
+</section>
+
+{# Calculator App #}
+<section class="section bg-gray-50">
+  <div class="container">
+    <div class="max-w-4xl mx-auto" x-data="budgetCalculator()">
+
+      {# Step 1: Party Size #}
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-bold">1</span>
+          Your Party
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Adults (10+)</label>
+            <input
+              type="number"
+              x-model.number="party.adults"
+              min="1"
+              max="20"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            >
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Children (3-9)</label>
+            <input
+              type="number"
+              x-model.number="party.children"
+              min="0"
+              max="20"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            >
+          </div>
+        </div>
+      </div>
+
+      {# Step 2: Parks & Days #}
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-bold">2</span>
+          Parks & Days
+        </h2>
+
+        <div class="space-y-6">
+          {# Disney #}
+          <div class="border border-gray-200 rounded-xl p-4">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" x-model="parks.disney.enabled" class="w-5 h-5 text-primary-500 rounded">
+              <span class="font-semibold">Walt Disney World</span>
+            </label>
+            <div x-show="parks.disney.enabled" x-transition class="mt-4 pl-8 space-y-4">
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Days:</label>
+                <input type="number" x-model.number="parks.disney.days" min="1" max="14" class="w-20 px-3 py-2 border rounded-lg">
+              </div>
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Ticket Type:</label>
+                <select x-model="parks.disney.ticketType" class="flex-1 px-3 py-2 border rounded-lg">
+                  <option value="base">Base Ticket</option>
+                  <option value="parkHopper">Park Hopper</option>
+                  <option value="parkHopperPlus">Park Hopper Plus</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Lightning Lane:</label>
+                <select x-model="parks.disney.lightningLane" class="flex-1 px-3 py-2 border rounded-lg">
+                  <option value="none">None</option>
+                  <option value="multiPass">Multi Pass ($30/day)</option>
+                  <option value="premier">Premier Pass ($130+/day)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {# Universal #}
+          <div class="border border-gray-200 rounded-xl p-4">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" x-model="parks.universal.enabled" class="w-5 h-5 text-primary-500 rounded">
+              <span class="font-semibold">Universal Orlando (incl. Epic Universe)</span>
+            </label>
+            <div x-show="parks.universal.enabled" x-transition class="mt-4 pl-8 space-y-4">
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Days:</label>
+                <input type="number" x-model.number="parks.universal.days" min="1" max="14" class="w-20 px-3 py-2 border rounded-lg">
+              </div>
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Parks:</label>
+                <select x-model="parks.universal.parkOption" class="flex-1 px-3 py-2 border rounded-lg">
+                  <option value="single">Single Park</option>
+                  <option value="2park">2-Park Access</option>
+                  <option value="3park">3-Park (incl. Epic Universe)</option>
+                </select>
+              </div>
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Express Pass:</label>
+                <select x-model="parks.universal.expressPass" class="flex-1 px-3 py-2 border rounded-lg">
+                  <option value="none">None</option>
+                  <option value="express">Express Pass ($100+/day)</option>
+                  <option value="unlimited">Unlimited Express ($150+/day)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {# SeaWorld #}
+          <div class="border border-gray-200 rounded-xl p-4">
+            <label class="flex items-center gap-3 cursor-pointer">
+              <input type="checkbox" x-model="parks.seaworld.enabled" class="w-5 h-5 text-primary-500 rounded">
+              <span class="font-semibold">SeaWorld Orlando</span>
+            </label>
+            <div x-show="parks.seaworld.enabled" x-transition class="mt-4 pl-8 space-y-4">
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Days:</label>
+                <input type="number" x-model.number="parks.seaworld.days" min="1" max="7" class="w-20 px-3 py-2 border rounded-lg">
+              </div>
+              <div class="flex items-center gap-4">
+                <label class="text-sm text-gray-600 w-24">Parks:</label>
+                <select x-model="parks.seaworld.parkOption" class="flex-1 px-3 py-2 border rounded-lg">
+                  <option value="single">SeaWorld Only</option>
+                  <option value="combo2">SeaWorld + Aquatica</option>
+                  <option value="combo3">SeaWorld + Busch Gardens + Aquatica</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {# Step 3: Accommodations #}
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-bold">3</span>
+          Accommodations
+        </h2>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Number of Nights</label>
+            <input
+              type="number"
+              x-model.number="hotel.nights"
+              min="1"
+              max="21"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500"
+            >
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Hotel Type</label>
+            <select x-model="hotel.type" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500">
+              <option value="budget">Budget ($80-120/night)</option>
+              <option value="moderate">Moderate ($150-250/night)</option>
+              <option value="deluxe">Deluxe ($300-450/night)</option>
+              <option value="luxury">Luxury ($500+/night)</option>
+              <option value="onsite-value">Disney Value Resort ($200/night)</option>
+              <option value="onsite-moderate">Disney Moderate Resort ($350/night)</option>
+              <option value="onsite-deluxe">Disney Deluxe Resort ($600/night)</option>
+              <option value="universal-value">Universal Value Hotel ($200/night)</option>
+              <option value="universal-premier">Universal Premier Hotel ($350/night)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      {# Step 4: Dining & Extras #}
+      <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 mb-6">
+        <h2 class="text-xl font-bold mb-6 flex items-center gap-2">
+          <span class="w-8 h-8 bg-primary-500 text-white rounded-full flex items-center justify-center text-sm font-bold">4</span>
+          Dining & Extras
+        </h2>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Dining Budget (per person/day)</label>
+            <select x-model="dining.budget" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+              <option value="budget">Budget - Quick Service Only ($50/day)</option>
+              <option value="moderate">Moderate - Mix of QS & Table ($80/day)</option>
+              <option value="full">Full Experience - Table Service ($120/day)</option>
+              <option value="splurge">Splurge - Signature Dining ($180/day)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Transportation</label>
+            <select x-model="transport" class="w-full px-4 py-3 border border-gray-300 rounded-lg">
+              <option value="none">Use Resort Transportation (Free)</option>
+              <option value="rental">Rental Car ($50/day + $30 parking)</option>
+              <option value="rideshare">Rideshare ($40/day estimate)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Souvenirs & Misc (per day)</label>
+            <input
+              type="number"
+              x-model.number="extras.souvenirs"
+              min="0"
+              max="500"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg"
+            >
+          </div>
+        </div>
+      </div>
+
+      {# Results #}
+      <div class="bg-gradient-to-br from-accent-600 to-accent-500 rounded-2xl shadow-lg p-6 md:p-8 text-white">
+        <h2 class="text-2xl font-bold mb-6">Estimated Trip Cost</h2>
+
+        <div class="space-y-4 mb-6">
+          <div class="flex justify-between items-center py-2 border-b border-white/20">
+            <span>Theme Park Tickets</span>
+            <span class="font-bold" x-text="'$' + ticketCost.toLocaleString()"></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-white/20">
+            <span>Accommodations (<span x-text="hotel.nights"></span> nights)</span>
+            <span class="font-bold" x-text="'$' + hotelCost.toLocaleString()"></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-white/20">
+            <span>Dining</span>
+            <span class="font-bold" x-text="'$' + diningCost.toLocaleString()"></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-white/20">
+            <span>Transportation</span>
+            <span class="font-bold" x-text="'$' + transportCost.toLocaleString()"></span>
+          </div>
+          <div class="flex justify-between items-center py-2 border-b border-white/20">
+            <span>Extras & Souvenirs</span>
+            <span class="font-bold" x-text="'$' + extrasCost.toLocaleString()"></span>
+          </div>
+        </div>
+
+        <div class="bg-white/10 rounded-xl p-4 mb-4">
+          <div class="flex justify-between items-center">
+            <span class="text-xl font-bold">Total Estimated Cost</span>
+            <span class="text-3xl font-bold" x-text="'$' + totalCost.toLocaleString()"></span>
+          </div>
+          <p class="text-sm opacity-80 mt-2">
+            Per person: <span class="font-semibold" x-text="'$' + perPersonCost.toLocaleString()"></span>
+          </p>
+        </div>
+
+        <p class="text-xs opacity-70">
+          * Estimates based on 2025-2026 pricing. Actual costs may vary based on dates, availability, and specific choices. Prices do not include airfare.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+function budgetCalculator() {
+  return {
+    party: { adults: 2, children: 0 },
+    parks: {
+      disney: { enabled: true, days: 4, ticketType: 'parkHopper', lightningLane: 'none' },
+      universal: { enabled: true, days: 3, parkOption: '3park', expressPass: 'none' },
+      seaworld: { enabled: false, days: 1, parkOption: 'single' }
+    },
+    hotel: { nights: 7, type: 'moderate' },
+    dining: { budget: 'moderate' },
+    transport: 'none',
+    extras: { souvenirs: 50 },
+
+    get totalPeople() { return this.party.adults + this.party.children; },
+    get totalDays() {
+      let days = 0;
+      if (this.parks.disney.enabled) days += this.parks.disney.days;
+      if (this.parks.universal.enabled) days += this.parks.universal.days;
+      if (this.parks.seaworld.enabled) days += this.parks.seaworld.days;
+      return days || this.hotel.nights;
+    },
+
+    get ticketCost() {
+      let cost = 0;
+
+      // Disney pricing (per day rates improve with more days)
+      if (this.parks.disney.enabled) {
+        const disneyBase = { 1: 169, 2: 159, 3: 139, 4: 119, 5: 99 };
+        const baseRate = disneyBase[Math.min(this.parks.disney.days, 5)] || 89;
+        let adultPrice = baseRate * this.parks.disney.days;
+        let childPrice = (baseRate - 10) * this.parks.disney.days;
+
+        // Park Hopper adds
+        if (this.parks.disney.ticketType === 'parkHopper') {
+          adultPrice += 80;
+          childPrice += 80;
+        } else if (this.parks.disney.ticketType === 'parkHopperPlus') {
+          adultPrice += 105;
+          childPrice += 105;
+        }
+
+        // Lightning Lane
+        if (this.parks.disney.lightningLane === 'multiPass') {
+          adultPrice += 30 * this.parks.disney.days;
+          childPrice += 30 * this.parks.disney.days;
+        } else if (this.parks.disney.lightningLane === 'premier') {
+          adultPrice += 130 * this.parks.disney.days;
+          childPrice += 130 * this.parks.disney.days;
+        }
+
+        cost += (adultPrice * this.party.adults) + (childPrice * this.party.children);
+      }
+
+      // Universal pricing
+      if (this.parks.universal.enabled) {
+        const uniBase = { 1: 169, 2: 149, 3: 119, 4: 99 };
+        let baseRate = uniBase[Math.min(this.parks.universal.days, 4)] || 89;
+
+        if (this.parks.universal.parkOption === '2park') baseRate += 40;
+        if (this.parks.universal.parkOption === '3park') baseRate += 80;
+
+        let adultPrice = baseRate * this.parks.universal.days;
+        let childPrice = (baseRate - 10) * this.parks.universal.days;
+
+        // Express Pass
+        if (this.parks.universal.expressPass === 'express') {
+          adultPrice += 100 * this.parks.universal.days;
+          childPrice += 100 * this.parks.universal.days;
+        } else if (this.parks.universal.expressPass === 'unlimited') {
+          adultPrice += 150 * this.parks.universal.days;
+          childPrice += 150 * this.parks.universal.days;
+        }
+
+        cost += (adultPrice * this.party.adults) + (childPrice * this.party.children);
+      }
+
+      // SeaWorld pricing
+      if (this.parks.seaworld.enabled) {
+        let baseRate = 99;
+        if (this.parks.seaworld.parkOption === 'combo2') baseRate = 139;
+        if (this.parks.seaworld.parkOption === 'combo3') baseRate = 199;
+
+        const adultPrice = baseRate * this.parks.seaworld.days;
+        const childPrice = (baseRate - 15) * this.parks.seaworld.days;
+
+        cost += (adultPrice * this.party.adults) + (childPrice * this.party.children);
+      }
+
+      return Math.round(cost);
+    },
+
+    get hotelCost() {
+      const rates = {
+        'budget': 100,
+        'moderate': 200,
+        'deluxe': 375,
+        'luxury': 550,
+        'onsite-value': 200,
+        'onsite-moderate': 350,
+        'onsite-deluxe': 600,
+        'universal-value': 200,
+        'universal-premier': 350
+      };
+      return Math.round(rates[this.hotel.type] * this.hotel.nights);
+    },
+
+    get diningCost() {
+      const rates = { 'budget': 50, 'moderate': 80, 'full': 120, 'splurge': 180 };
+      const perPerson = rates[this.dining.budget];
+      return Math.round(perPerson * this.totalPeople * this.totalDays);
+    },
+
+    get transportCost() {
+      if (this.transport === 'none') return 0;
+      if (this.transport === 'rental') return (50 + 30) * this.hotel.nights;
+      if (this.transport === 'rideshare') return 40 * this.totalDays;
+      return 0;
+    },
+
+    get extrasCost() {
+      return Math.round(this.extras.souvenirs * this.totalDays);
+    },
+
+    get totalCost() {
+      return this.ticketCost + this.hotelCost + this.diningCost + this.transportCost + this.extrasCost;
+    },
+
+    get perPersonCost() {
+      return Math.round(this.totalCost / this.totalPeople);
+    }
+  };
+}
+</script>
+
+{# JSON-LD for Tool #}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Orlando Budget Calculator",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Web",
+  "description": "Calculate your total Orlando theme park vacation cost including Disney World, Universal Orlando, and SeaWorld.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "Amusement Park Travel"
+  }
+}
+</script>
