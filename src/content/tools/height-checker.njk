@@ -1,0 +1,418 @@
+---
+layout: base.njk
+title: "Theme Park Height Checker - What Can Your Kids Ride?"
+description: "Enter your child's height to see which rides they can enjoy at Universal, Disney, Six Flags, and other major theme parks. Plan ahead and avoid disappointment."
+permalink: /tools/height-checker/
+---
+
+<main class="container mx-auto px-4 py-8 max-w-4xl">
+  <nav class="text-sm mb-6" aria-label="Breadcrumb">
+    <ol class="flex items-center space-x-2 text-gray-600">
+      <li><a href="/" class="hover:text-primary">Home</a></li>
+      <li>/</li>
+      <li><a href="/tools/" class="hover:text-primary">Tools</a></li>
+      <li>/</li>
+      <li class="text-gray-900">Height Checker</li>
+    </ol>
+  </nav>
+
+  <article x-data="heightChecker()">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Theme Park Height Checker</h1>
+      <p class="text-lg text-gray-600">Find out which attractions your child can ride before you visit. Enter their height and select a park to see a personalized list.</p>
+    </header>
+
+    <!-- Height Input -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Enter Height</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Measurement System</label>
+          <div class="flex space-x-4">
+            <button @click="unit = 'inches'" :class="unit === 'inches' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'" class="px-4 py-2 rounded-lg font-medium transition">
+              Inches
+            </button>
+            <button @click="unit = 'cm'" :class="unit === 'cm' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'" class="px-4 py-2 rounded-lg font-medium transition">
+              Centimeters
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Child's Height (<span x-text="unit === 'inches' ? 'inches' : 'cm'"></span>)
+          </label>
+          <div class="flex items-center space-x-4">
+            <input type="range" x-model="height" :min="unit === 'inches' ? 30 : 75" :max="unit === 'inches' ? 60 : 152" class="flex-1">
+            <input type="number" x-model.number="height" :min="unit === 'inches' ? 30 : 75" :max="unit === 'inches' ? 60 : 152" class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center">
+          </div>
+          <p class="text-sm text-gray-500 mt-2">
+            <span x-text="unit === 'inches' ? heightInCm + ' cm' : heightInInches + ' inches'"></span>
+            (<span x-text="heightInFeetInches"></span>)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Park Selection -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Select Park</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <template x-for="park in parks" :key="park.id">
+          <button @click="selectedPark = park.id" :class="selectedPark === park.id ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:border-primary'" class="px-4 py-3 rounded-lg border-2 font-medium text-sm transition text-center">
+            <span x-text="park.name"></span>
+          </button>
+        </template>
+      </div>
+    </section>
+
+    <!-- Results Summary -->
+    <section class="bg-gradient-to-br from-primary to-red-700 rounded-xl shadow-lg p-6 mb-6 text-white">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Results for <span x-text="heightDisplay"></span></h2>
+        <div class="text-right">
+          <div class="text-3xl font-bold" x-text="canRideCount + '/' + currentParkRides.length"></div>
+          <div class="text-sm opacity-90">Attractions Available</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white/20 rounded-lg p-3 text-center">
+          <div class="text-2xl font-bold text-green-300" x-text="canRideCount"></div>
+          <div class="text-xs">Can Ride</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-3 text-center">
+          <div class="text-2xl font-bold text-yellow-300" x-text="almostCount"></div>
+          <div class="text-xs">Almost (within 2")</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-3 text-center">
+          <div class="text-2xl font-bold text-red-300" x-text="cantRideCount"></div>
+          <div class="text-xs">Too Short</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attraction Lists -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Can Ride -->
+      <section class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-lg font-bold text-green-600 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Can Ride (<span x-text="canRideCount"></span>)
+        </h2>
+        <ul class="space-y-2 max-h-80 overflow-y-auto">
+          <template x-for="ride in canRideList" :key="ride.name">
+            <li class="flex items-center justify-between py-2 border-b border-gray-100">
+              <span class="font-medium" x-text="ride.name"></span>
+              <span class="text-sm text-gray-500" x-text="ride.requirement === 0 ? 'Any height' : formatHeight(ride.requirement) + ' min'"></span>
+            </li>
+          </template>
+          <li x-show="canRideList.length === 0" class="text-gray-500 italic">No attractions at this height</li>
+        </ul>
+      </section>
+
+      <!-- Almost There -->
+      <section class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-lg font-bold text-yellow-600 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          Almost There (<span x-text="almostCount"></span>)
+        </h2>
+        <ul class="space-y-2 max-h-80 overflow-y-auto">
+          <template x-for="ride in almostList" :key="ride.name">
+            <li class="flex items-center justify-between py-2 border-b border-gray-100">
+              <div>
+                <span class="font-medium" x-text="ride.name"></span>
+                <span class="text-xs text-yellow-600 block" x-text="'Needs ' + formatHeight(ride.requirement - heightInInches) + ' more'"></span>
+              </div>
+              <span class="text-sm text-gray-500" x-text="formatHeight(ride.requirement) + ' min'"></span>
+            </li>
+          </template>
+          <li x-show="almostList.length === 0" class="text-gray-500 italic">No attractions in this range</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Can't Ride Yet -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-lg font-bold text-red-600 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        Not Yet (<span x-text="cantRideCount"></span>)
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+        <template x-for="ride in cantRideList" :key="ride.name">
+          <div class="flex items-center justify-between py-2 px-3 bg-red-50 rounded-lg">
+            <span class="text-sm" x-text="ride.name"></span>
+            <span class="text-xs text-red-600" x-text="formatHeight(ride.requirement)"></span>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="bg-gray-50 rounded-xl p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Height Requirement Tips</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-2">Before You Go</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Measure your child at home in their park shoes
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Heights are measured in shoes at most parks
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Some parks offer height wristbands at entrance
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Requirements can change — verify day-of
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-2">At the Park</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Use "Rider Switch" so adults can take turns
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Check height at ride entrance before full queue
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Don't argue with cast members — it's for safety
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Plan backup attractions for "almost there" rides
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>
+
+<script>
+function heightChecker() {
+  return {
+    unit: 'inches',
+    height: 42,
+    selectedPark: 'universal-orlando',
+
+    parks: [
+      { id: 'universal-orlando', name: 'Universal Orlando' },
+      { id: 'universal-epic', name: 'Epic Universe' },
+      { id: 'disney-magic', name: 'Magic Kingdom' },
+      { id: 'disney-hollywood', name: 'Hollywood Studios' },
+      { id: 'disney-epcot', name: 'EPCOT' },
+      { id: 'disney-animal', name: 'Animal Kingdom' },
+      { id: 'six-flags-magic', name: 'Six Flags Magic Mountain' },
+      { id: 'cedar-point', name: 'Cedar Point' }
+    ],
+
+    // Height requirements in inches
+    rideData: {
+      'universal-orlando': [
+        { name: 'Hagrid\'s Magical Creatures', requirement: 48 },
+        { name: 'VelociCoaster', requirement: 51 },
+        { name: 'Hagrid\'s Magical Creatures', requirement: 48 },
+        { name: 'Incredible Hulk Coaster', requirement: 54 },
+        { name: 'Hollywood Rip Ride Rockit', requirement: 51 },
+        { name: 'Revenge of the Mummy', requirement: 48 },
+        { name: 'Harry Potter Forbidden Journey', requirement: 48 },
+        { name: 'Escape from Gringotts', requirement: 42 },
+        { name: 'Men in Black', requirement: 42 },
+        { name: 'Transformers', requirement: 40 },
+        { name: 'Fast & Furious', requirement: 40 },
+        { name: 'Simpsons Ride', requirement: 40 },
+        { name: 'Hogwarts Express', requirement: 0 },
+        { name: 'E.T. Adventure', requirement: 34 },
+        { name: 'Cat in the Hat', requirement: 36 },
+        { name: 'Flight of the Hippogriff', requirement: 36 },
+        { name: 'Despicable Me', requirement: 40 }
+      ],
+      'universal-epic': [
+        { name: 'Stardust Racers', requirement: 48 },
+        { name: 'Monsters Unchained', requirement: 48 },
+        { name: 'Curse of the Werewolf', requirement: 42 },
+        { name: 'Dragon Racer\'s Rally', requirement: 48 },
+        { name: 'Mario Kart: Bowser\'s Challenge', requirement: 40 },
+        { name: 'Mine-Cart Madness', requirement: 40 },
+        { name: 'Battle at the Ministry', requirement: 42 },
+        { name: 'Yoshi\'s Adventure', requirement: 34 },
+        { name: 'Hiccup\'s Wing Gliders', requirement: 40 },
+        { name: 'Constellation Carousel', requirement: 0 }
+      ],
+      'disney-magic': [
+        { name: 'TRON Lightcycle Run', requirement: 48 },
+        { name: 'Space Mountain', requirement: 44 },
+        { name: 'Big Thunder Mountain', requirement: 40 },
+        { name: 'Splash Mountain', requirement: 40 },
+        { name: 'Seven Dwarfs Mine Train', requirement: 38 },
+        { name: 'Tomorrowland Speedway', requirement: 32 },
+        { name: 'Barnstormer', requirement: 35 },
+        { name: 'Pirates of the Caribbean', requirement: 0 },
+        { name: 'Haunted Mansion', requirement: 0 },
+        { name: 'Jungle Cruise', requirement: 0 },
+        { name: 'It\'s a Small World', requirement: 0 },
+        { name: 'Peter Pan\'s Flight', requirement: 0 },
+        { name: 'Buzz Lightyear', requirement: 0 }
+      ],
+      'disney-hollywood': [
+        { name: 'Tower of Terror', requirement: 40 },
+        { name: 'Rock \'n\' Roller Coaster', requirement: 48 },
+        { name: 'Slinky Dog Dash', requirement: 38 },
+        { name: 'Millennium Falcon', requirement: 38 },
+        { name: 'Rise of the Resistance', requirement: 40 },
+        { name: 'Alien Swirling Saucers', requirement: 32 },
+        { name: 'Toy Story Mania', requirement: 0 },
+        { name: 'Mickey & Minnie\'s Runaway Railway', requirement: 0 }
+      ],
+      'disney-epcot': [
+        { name: 'Guardians of the Galaxy', requirement: 42 },
+        { name: 'Test Track', requirement: 40 },
+        { name: 'Mission: SPACE (Orange)', requirement: 44 },
+        { name: 'Mission: SPACE (Green)', requirement: 40 },
+        { name: 'Soarin\'', requirement: 40 },
+        { name: 'Frozen Ever After', requirement: 0 },
+        { name: 'Remy\'s Ratatouille', requirement: 0 },
+        { name: 'Spaceship Earth', requirement: 0 },
+        { name: 'Living with the Land', requirement: 0 }
+      ],
+      'disney-animal': [
+        { name: 'Avatar Flight of Passage', requirement: 44 },
+        { name: 'Expedition Everest', requirement: 44 },
+        { name: 'Dinosaur', requirement: 40 },
+        { name: 'Kali River Rapids', requirement: 38 },
+        { name: 'Na\'vi River Journey', requirement: 0 },
+        { name: 'Kilimanjaro Safaris', requirement: 0 }
+      ],
+      'six-flags-magic': [
+        { name: 'X2', requirement: 48 },
+        { name: 'Twisted Colossus', requirement: 48 },
+        { name: 'Tatsu', requirement: 54 },
+        { name: 'Full Throttle', requirement: 48 },
+        { name: 'Goliath', requirement: 48 },
+        { name: 'Superman: Escape', requirement: 48 },
+        { name: 'Batman: The Ride', requirement: 54 },
+        { name: 'Riddler\'s Revenge', requirement: 54 },
+        { name: 'West Coast Racers', requirement: 48 },
+        { name: 'Wonder Woman', requirement: 48 },
+        { name: 'Viper', requirement: 54 },
+        { name: 'Revolution', requirement: 48 },
+        { name: 'Apocalypse', requirement: 48 },
+        { name: 'Gold Rusher', requirement: 46 },
+        { name: 'Ninja', requirement: 42 },
+        { name: 'Road Runner Express', requirement: 36 },
+        { name: 'Speedy Gonzales', requirement: 36 }
+      ],
+      'cedar-point': [
+        { name: 'Steel Vengeance', requirement: 52 },
+        { name: 'Millennium Force', requirement: 48 },
+        { name: 'Top Thrill 2', requirement: 52 },
+        { name: 'Maverick', requirement: 52 },
+        { name: 'Valravn', requirement: 52 },
+        { name: 'Gatekeeper', requirement: 52 },
+        { name: 'Raptor', requirement: 54 },
+        { name: 'Magnum XL-200', requirement: 48 },
+        { name: 'Gemini', requirement: 48 },
+        { name: 'Blue Streak', requirement: 48 },
+        { name: 'Rougarou', requirement: 54 },
+        { name: 'Corkscrew', requirement: 48 },
+        { name: 'Iron Dragon', requirement: 46 },
+        { name: 'Mine Ride', requirement: 48 },
+        { name: 'Woodstock Express', requirement: 40 },
+        { name: 'Wilderness Run', requirement: 36 }
+      ]
+    },
+
+    get heightInInches() {
+      if (this.unit === 'inches') return this.height;
+      return Math.round(this.height / 2.54);
+    },
+
+    get heightInCm() {
+      if (this.unit === 'cm') return this.height;
+      return Math.round(this.height * 2.54);
+    },
+
+    get heightInFeetInches() {
+      const inches = this.heightInInches;
+      const feet = Math.floor(inches / 12);
+      const remainingInches = inches % 12;
+      return `${feet}'${remainingInches}"`;
+    },
+
+    get heightDisplay() {
+      return this.unit === 'inches'
+        ? `${this.height}" (${this.heightInFeetInches})`
+        : `${this.height} cm (${this.heightInFeetInches})`;
+    },
+
+    get currentParkRides() {
+      return this.rideData[this.selectedPark] || [];
+    },
+
+    get canRideList() {
+      return this.currentParkRides
+        .filter(ride => this.heightInInches >= ride.requirement)
+        .sort((a, b) => b.requirement - a.requirement);
+    },
+
+    get almostList() {
+      return this.currentParkRides
+        .filter(ride => {
+          const diff = ride.requirement - this.heightInInches;
+          return diff > 0 && diff <= 2;
+        })
+        .sort((a, b) => a.requirement - b.requirement);
+    },
+
+    get cantRideList() {
+      return this.currentParkRides
+        .filter(ride => ride.requirement - this.heightInInches > 2)
+        .sort((a, b) => a.requirement - b.requirement);
+    },
+
+    get canRideCount() {
+      return this.canRideList.length;
+    },
+
+    get almostCount() {
+      return this.almostList.length;
+    },
+
+    get cantRideCount() {
+      return this.cantRideList.length;
+    },
+
+    formatHeight(inches) {
+      if (inches < 0) return '0"';
+      if (this.unit === 'cm') {
+        return Math.round(inches * 2.54) + ' cm';
+      }
+      if (inches >= 12) {
+        const feet = Math.floor(inches / 12);
+        const remaining = inches % 12;
+        return remaining > 0 ? `${feet}'${remaining}"` : `${feet}'`;
+      }
+      return `${inches}"`;
+    }
+  };
+}
+</script>
