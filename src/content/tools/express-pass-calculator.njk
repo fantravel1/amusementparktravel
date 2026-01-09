@@ -1,0 +1,494 @@
+---
+layout: base.njk
+title: "Express Pass ROI Calculator - Is Skip-the-Line Worth It?"
+description: "Calculate if Express Pass, Lightning Lane, or Fast Pass is worth the cost for your theme park visit. Compare wait time savings vs. price to make the smart choice."
+permalink: /tools/express-pass-calculator/
+---
+
+<main class="container mx-auto px-4 py-8 max-w-4xl">
+  <nav class="text-sm mb-6" aria-label="Breadcrumb">
+    <ol class="flex items-center space-x-2 text-gray-600">
+      <li><a href="/" class="hover:text-primary">Home</a></li>
+      <li>/</li>
+      <li><a href="/tools/" class="hover:text-primary">Tools</a></li>
+      <li>/</li>
+      <li class="text-gray-900">Express Pass Calculator</li>
+    </ol>
+  </nav>
+
+  <article x-data="expressPassCalculator()">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Express Pass ROI Calculator</h1>
+      <p class="text-lg text-gray-600">Is skip-the-line worth it? Calculate your potential time savings and decide if Express Pass, Lightning Lane, or similar services make sense for your trip.</p>
+    </header>
+
+    <!-- Park Selection -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Select Your Park</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Theme Park</label>
+          <select x-model="selectedPark" @change="updateParkData()" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+            <option value="universal-orlando">Universal Orlando Resort</option>
+            <option value="universal-epic">Universal Epic Universe</option>
+            <option value="disney-world">Walt Disney World</option>
+            <option value="disneyland">Disneyland Resort</option>
+            <option value="six-flags">Six Flags Parks</option>
+            <option value="cedar-fair">Cedar Fair Parks</option>
+            <option value="europa-park">Europa-Park</option>
+            <option value="phantasialand">Phantasialand</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Expected Crowd Level</label>
+          <select x-model="crowdLevel" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+            <option value="low">Low (Off-Peak Weekday)</option>
+            <option value="moderate">Moderate (Average Day)</option>
+            <option value="high">High (Weekend/Holiday)</option>
+            <option value="extreme">Extreme (Peak Season)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Visit Details -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Visit Details</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Party Size</label>
+          <input type="number" x-model.number="partySize" min="1" max="20" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Hours in Park</label>
+          <input type="number" x-model.number="hoursInPark" min="1" max="16" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Target Rides</label>
+          <input type="number" x-model.number="targetRides" min="1" max="30" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Express Pass Type</label>
+          <select x-model="passType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+            <template x-for="option in parkData.passOptions" :key="option.id">
+              <option :value="option.id" x-text="option.name + ' - $' + option.price"></option>
+            </template>
+          </select>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">How Much is Your Time Worth? ($/hour)</label>
+          <input type="number" x-model.number="hourlyValue" min="0" max="500" step="5" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+          <p class="text-xs text-gray-500 mt-1">Consider: opportunity cost, stress reduction, extra rides</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results -->
+    <section class="bg-gradient-to-br from-primary to-red-700 rounded-xl shadow-lg p-6 mb-6 text-white">
+      <h2 class="text-xl font-bold mb-4">Your Results</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold" x-text="formatTime(estimatedWaitWithout)"></div>
+          <div class="text-sm opacity-90">Wait Without Pass</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold" x-text="formatTime(estimatedWaitWith)"></div>
+          <div class="text-sm opacity-90">Wait With Pass</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold" x-text="formatTime(timeSaved)"></div>
+          <div class="text-sm opacity-90">Time Saved</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-4 text-center">
+          <div class="text-3xl font-bold">$<span x-text="totalCost.toLocaleString()"></span></div>
+          <div class="text-sm opacity-90">Total Cost</div>
+        </div>
+      </div>
+
+      <div class="bg-white/10 rounded-lg p-4">
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold">Value of Time Saved:</span>
+          <span class="text-xl font-bold">$<span x-text="valueOfTimeSaved.toFixed(0)"></span></span>
+        </div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold">Cost Per Hour Saved:</span>
+          <span class="text-xl font-bold">$<span x-text="costPerHourSaved.toFixed(0)"></span>/hr</span>
+        </div>
+        <div class="flex items-center justify-between mb-2">
+          <span class="font-semibold">Extra Rides Possible:</span>
+          <span class="text-xl font-bold">+<span x-text="extraRides"></span> rides</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recommendation -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Our Recommendation</h2>
+
+      <div class="flex items-start space-x-4">
+        <div class="flex-shrink-0">
+          <div x-show="roiScore >= 1.0" class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+          </div>
+          <div x-show="roiScore >= 0.7 && roiScore < 1.0" class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+            </svg>
+          </div>
+          <div x-show="roiScore < 0.7" class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+            <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </div>
+        </div>
+        <div>
+          <h3 class="text-lg font-bold" x-text="recommendation.title"></h3>
+          <p class="text-gray-600" x-text="recommendation.message"></p>
+          <ul class="mt-3 space-y-1 text-sm text-gray-600">
+            <template x-for="tip in recommendation.tips" :key="tip">
+              <li class="flex items-start">
+                <span class="text-primary mr-2">•</span>
+                <span x-text="tip"></span>
+              </li>
+            </template>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comparison Table -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6 overflow-x-auto">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Scenario Comparison</h2>
+
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b">
+            <th class="text-left py-2 px-2">Metric</th>
+            <th class="text-center py-2 px-2">Without Pass</th>
+            <th class="text-center py-2 px-2 bg-primary/10">With Pass</th>
+            <th class="text-center py-2 px-2">Difference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-b">
+            <td class="py-2 px-2 font-medium">Total Wait Time</td>
+            <td class="text-center py-2 px-2" x-text="formatTime(estimatedWaitWithout)"></td>
+            <td class="text-center py-2 px-2 bg-primary/10" x-text="formatTime(estimatedWaitWith)"></td>
+            <td class="text-center py-2 px-2 text-green-600" x-text="'-' + formatTime(timeSaved)"></td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2 px-2 font-medium">Rides Achievable</td>
+            <td class="text-center py-2 px-2" x-text="ridesWithout"></td>
+            <td class="text-center py-2 px-2 bg-primary/10" x-text="ridesWith"></td>
+            <td class="text-center py-2 px-2 text-green-600" x-text="'+' + extraRides"></td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2 px-2 font-medium">Cost</td>
+            <td class="text-center py-2 px-2">$0</td>
+            <td class="text-center py-2 px-2 bg-primary/10">$<span x-text="totalCost.toLocaleString()"></span></td>
+            <td class="text-center py-2 px-2 text-red-600">+$<span x-text="totalCost.toLocaleString()"></span></td>
+          </tr>
+          <tr class="border-b">
+            <td class="py-2 px-2 font-medium">Avg Wait Per Ride</td>
+            <td class="text-center py-2 px-2" x-text="avgWaitWithout + ' min'"></td>
+            <td class="text-center py-2 px-2 bg-primary/10" x-text="avgWaitWith + ' min'"></td>
+            <td class="text-center py-2 px-2 text-green-600" x-text="'-' + (avgWaitWithout - avgWaitWith) + ' min'"></td>
+          </tr>
+          <tr>
+            <td class="py-2 px-2 font-medium">Time for Shows/Food</td>
+            <td class="text-center py-2 px-2" x-text="formatTime(freeTimeWithout)"></td>
+            <td class="text-center py-2 px-2 bg-primary/10" x-text="formatTime(freeTimeWith)"></td>
+            <td class="text-center py-2 px-2 text-green-600" x-text="'+' + formatTime(timeSaved)"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="bg-gray-50 rounded-xl p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Maximizing Value Without Express Pass</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="text-primary font-bold">1</span>
+          </div>
+          <div>
+            <h3 class="font-semibold">Arrive at Rope Drop</h3>
+            <p class="text-sm text-gray-600">First hour has 50-70% shorter waits than midday</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="text-primary font-bold">2</span>
+          </div>
+          <div>
+            <h3 class="font-semibold">Use Single Rider Lines</h3>
+            <p class="text-sm text-gray-600">Often 50%+ faster, available on many major rides</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="text-primary font-bold">3</span>
+          </div>
+          <div>
+            <h3 class="font-semibold">Ride During Parades/Shows</h3>
+            <p class="text-sm text-gray-600">Wait times drop significantly during entertainment</p>
+          </div>
+        </div>
+        <div class="flex items-start space-x-3">
+          <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+            <span class="text-primary font-bold">4</span>
+          </div>
+          <div>
+            <h3 class="font-semibold">Stay Until Close</h3>
+            <p class="text-sm text-gray-600">Last 1-2 hours see dramatically reduced crowds</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>
+
+<script>
+function expressPassCalculator() {
+  return {
+    selectedPark: 'universal-orlando',
+    crowdLevel: 'moderate',
+    partySize: 2,
+    hoursInPark: 10,
+    targetRides: 10,
+    passType: 'express',
+    hourlyValue: 25,
+
+    parkData: {
+      passOptions: [
+        { id: 'express', name: 'Universal Express', price: 90 },
+        { id: 'express-unlimited', name: 'Express Unlimited', price: 170 }
+      ],
+      avgWaitMultipliers: { low: 0.5, moderate: 1.0, high: 1.5, extreme: 2.0 },
+      baseAvgWait: 45,
+      expressWaitReduction: 0.85
+    },
+
+    parkConfigs: {
+      'universal-orlando': {
+        passOptions: [
+          { id: 'express', name: 'Universal Express', price: 90 },
+          { id: 'express-unlimited', name: 'Express Unlimited', price: 170 }
+        ],
+        baseAvgWait: 45,
+        expressWaitReduction: 0.85
+      },
+      'universal-epic': {
+        passOptions: [
+          { id: 'express', name: 'Express Pass', price: 140 },
+          { id: 'express-unlimited', name: 'Express Unlimited', price: 260 }
+        ],
+        baseAvgWait: 60,
+        expressWaitReduction: 0.85
+      },
+      'disney-world': {
+        passOptions: [
+          { id: 'lightning-single', name: 'Lightning Lane Single', price: 15 },
+          { id: 'lightning-multi', name: 'Lightning Lane Multi (est. 3 rides)', price: 85 }
+        ],
+        baseAvgWait: 50,
+        expressWaitReduction: 0.90
+      },
+      'disneyland': {
+        passOptions: [
+          { id: 'lightning-single', name: 'Lightning Lane Single', price: 20 },
+          { id: 'lightning-multi', name: 'Lightning Lane Multi (est. 3 rides)', price: 70 }
+        ],
+        baseAvgWait: 55,
+        expressWaitReduction: 0.90
+      },
+      'six-flags': {
+        passOptions: [
+          { id: 'flash', name: 'Flash Pass', price: 55 },
+          { id: 'flash-gold', name: 'Flash Pass Gold', price: 110 },
+          { id: 'flash-platinum', name: 'Flash Pass Platinum', price: 180 }
+        ],
+        baseAvgWait: 35,
+        expressWaitReduction: 0.80
+      },
+      'cedar-fair': {
+        passOptions: [
+          { id: 'fast-lane', name: 'Fast Lane', price: 80 },
+          { id: 'fast-lane-plus', name: 'Fast Lane Plus', price: 130 }
+        ],
+        baseAvgWait: 40,
+        expressWaitReduction: 0.82
+      },
+      'europa-park': {
+        passOptions: [
+          { id: 'none', name: 'No Express Option (Strategy Tips)', price: 0 }
+        ],
+        baseAvgWait: 35,
+        expressWaitReduction: 0
+      },
+      'phantasialand': {
+        passOptions: [
+          { id: 'none', name: 'No Express Option (Strategy Tips)', price: 0 }
+        ],
+        baseAvgWait: 30,
+        expressWaitReduction: 0
+      }
+    },
+
+    init() {
+      this.updateParkData();
+    },
+
+    updateParkData() {
+      this.parkData = this.parkConfigs[this.selectedPark];
+      this.passType = this.parkData.passOptions[0].id;
+    },
+
+    get selectedPassOption() {
+      return this.parkData.passOptions.find(p => p.id === this.passType) || this.parkData.passOptions[0];
+    },
+
+    get crowdMultiplier() {
+      const multipliers = { low: 0.5, moderate: 1.0, high: 1.5, extreme: 2.0 };
+      return multipliers[this.crowdLevel];
+    },
+
+    get avgWaitWithout() {
+      return Math.round(this.parkData.baseAvgWait * this.crowdMultiplier);
+    },
+
+    get avgWaitWith() {
+      if (this.parkData.expressWaitReduction === 0) return this.avgWaitWithout;
+      return Math.round(this.avgWaitWithout * (1 - this.parkData.expressWaitReduction));
+    },
+
+    get estimatedWaitWithout() {
+      return this.targetRides * this.avgWaitWithout;
+    },
+
+    get estimatedWaitWith() {
+      return this.targetRides * this.avgWaitWith;
+    },
+
+    get timeSaved() {
+      return Math.max(0, this.estimatedWaitWithout - this.estimatedWaitWith);
+    },
+
+    get totalCost() {
+      return this.selectedPassOption.price * this.partySize;
+    },
+
+    get valueOfTimeSaved() {
+      return (this.timeSaved / 60) * this.hourlyValue * this.partySize;
+    },
+
+    get costPerHourSaved() {
+      if (this.timeSaved === 0) return Infinity;
+      return this.totalCost / (this.timeSaved / 60);
+    },
+
+    get rideTime() {
+      return 5; // Average ride duration in minutes
+    },
+
+    get ridesWithout() {
+      const totalMinutes = this.hoursInPark * 60;
+      const timeForRides = totalMinutes * 0.7; // 70% of time for rides
+      return Math.floor(timeForRides / (this.avgWaitWithout + this.rideTime));
+    },
+
+    get ridesWith() {
+      const totalMinutes = this.hoursInPark * 60;
+      const timeForRides = totalMinutes * 0.7;
+      return Math.floor(timeForRides / (this.avgWaitWith + this.rideTime));
+    },
+
+    get extraRides() {
+      return Math.max(0, this.ridesWith - this.ridesWithout);
+    },
+
+    get freeTimeWithout() {
+      return Math.max(0, (this.hoursInPark * 60) - this.estimatedWaitWithout - (this.targetRides * this.rideTime));
+    },
+
+    get freeTimeWith() {
+      return Math.max(0, (this.hoursInPark * 60) - this.estimatedWaitWith - (this.targetRides * this.rideTime));
+    },
+
+    get roiScore() {
+      if (this.totalCost === 0) return 0;
+      return this.valueOfTimeSaved / this.totalCost;
+    },
+
+    get recommendation() {
+      if (this.parkData.expressWaitReduction === 0) {
+        return {
+          title: "Express Pass Not Available",
+          message: "This park doesn't offer a paid express pass system. Use our strategy tips instead!",
+          tips: [
+            "Arrive at rope drop for shortest waits",
+            "Use single rider lines where available",
+            "Stay until closing for reduced crowds",
+            "Weekdays have significantly shorter waits"
+          ]
+        };
+      }
+
+      if (this.roiScore >= 1.2) {
+        return {
+          title: "Highly Recommended! Great Value",
+          message: `At ${this.crowdLevel} crowds, Express Pass will save you ${this.formatTime(this.timeSaved)} and let you experience ${this.extraRides} more rides. The time savings alone exceed the cost.`,
+          tips: [
+            "Book Express Pass in advance for best prices",
+            "Still arrive early to maximize your day",
+            "Use express on longest-wait attractions first",
+            "Some attractions may not be included"
+          ]
+        };
+      } else if (this.roiScore >= 0.7) {
+        return {
+          title: "Consider It - Moderate Value",
+          message: "Express Pass offers decent value for your situation. Worth it if you prioritize comfort and extra experiences over strict cost efficiency.",
+          tips: [
+            "Compare with rope drop strategy (free)",
+            "Consider splitting: buy for peak hours only",
+            "Most valuable for families with young kids",
+            "Check if your hotel includes express benefits"
+          ]
+        };
+      } else {
+        return {
+          title: "Skip It - Better Alternatives",
+          message: "Based on your inputs, Express Pass doesn't offer strong value. Strategic planning can achieve similar results for free.",
+          tips: [
+            "Arrive at park opening - first hour is golden",
+            "Use single rider lines to cut waits 50%+",
+            "Ride popular attractions during parades/shows",
+            "Consider visiting on a lower-crowd day instead"
+          ]
+        };
+      }
+    },
+
+    formatTime(minutes) {
+      if (minutes < 60) return `${minutes}m`;
+      const hours = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return mins > 0 ? `${hours}h ${mins}m` : `${hours}h`;
+    }
+  };
+}
+</script>

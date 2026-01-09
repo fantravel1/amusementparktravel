@@ -1,0 +1,490 @@
+---
+layout: base.njk
+title: "Theme Park Crowd Calendar 2025 - Best Days to Visit"
+description: "Find the best days to visit Disney, Universal, Six Flags and other major theme parks. See predicted crowd levels, special events, and optimal visiting windows."
+permalink: /tools/crowd-calendar/
+---
+
+<main class="container mx-auto px-4 py-8 max-w-5xl">
+  <nav class="text-sm mb-6" aria-label="Breadcrumb">
+    <ol class="flex items-center space-x-2 text-gray-600">
+      <li><a href="/" class="hover:text-primary">Home</a></li>
+      <li>/</li>
+      <li><a href="/tools/" class="hover:text-primary">Tools</a></li>
+      <li>/</li>
+      <li class="text-gray-900">Crowd Calendar</li>
+    </ol>
+  </nav>
+
+  <article x-data="crowdCalendar()">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Theme Park Crowd Calendar 2025</h1>
+      <p class="text-lg text-gray-600">Plan your visit for the shortest wait times. See predicted crowd levels based on historical data, school schedules, and special events.</p>
+    </header>
+
+    <!-- Park Selection -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Select Park</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <template x-for="park in parks" :key="park.id">
+          <button @click="selectedPark = park.id" :class="selectedPark === park.id ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:border-primary'" class="px-4 py-3 rounded-lg border-2 font-medium text-sm transition text-center">
+            <span x-text="park.name"></span>
+          </button>
+        </template>
+      </div>
+    </section>
+
+    <!-- Month Navigation -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <div class="flex items-center justify-between mb-4">
+        <button @click="previousMonth()" class="p-2 hover:bg-gray-100 rounded-lg transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+        </button>
+        <h2 class="text-2xl font-bold text-gray-900" x-text="monthYearDisplay"></h2>
+        <button @click="nextMonth()" class="p-2 hover:bg-gray-100 rounded-lg transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Legend -->
+      <div class="flex flex-wrap gap-4 mb-6 text-sm">
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-green-500"></div>
+          <span>Low (1-3)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-yellow-500"></div>
+          <span>Moderate (4-6)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-orange-500"></div>
+          <span>High (7-8)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="w-4 h-4 rounded bg-red-600"></div>
+          <span>Extreme (9-10)</span>
+        </div>
+      </div>
+
+      <!-- Calendar Grid -->
+      <div class="grid grid-cols-7 gap-1">
+        <!-- Day Headers -->
+        <template x-for="day in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">
+          <div class="text-center text-sm font-medium text-gray-500 py-2" x-text="day"></div>
+        </template>
+
+        <!-- Calendar Days -->
+        <template x-for="day in calendarDays" :key="day.date">
+          <div
+            @click="day.inMonth && selectDay(day)"
+            :class="{
+              'cursor-pointer hover:ring-2 hover:ring-primary': day.inMonth,
+              'opacity-30': !day.inMonth,
+              'ring-2 ring-primary': selectedDay && selectedDay.date === day.date
+            }"
+            class="aspect-square p-1 rounded-lg transition"
+          >
+            <div
+              :class="getCrowdClass(day.crowd)"
+              class="w-full h-full rounded-lg flex flex-col items-center justify-center text-white"
+            >
+              <span class="text-sm font-bold" x-text="day.dayNum"></span>
+              <span class="text-xs" x-text="day.inMonth ? day.crowd : ''"></span>
+            </div>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Selected Day Details -->
+    <section x-show="selectedDay" class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">
+        <span x-text="selectedDay ? formatDate(selectedDay.date) : ''"></span>
+      </h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-500 mb-1">Crowd Level</div>
+          <div class="text-2xl font-bold" :class="selectedDay ? getCrowdTextClass(selectedDay.crowd) : ''" x-text="selectedDay ? selectedDay.crowd + '/10' : ''"></div>
+          <div class="text-sm" x-text="selectedDay ? getCrowdLabel(selectedDay.crowd) : ''"></div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-500 mb-1">Expected Wait Times</div>
+          <div class="text-2xl font-bold text-gray-900" x-text="selectedDay ? getWaitTimes(selectedDay.crowd) : ''"></div>
+          <div class="text-sm text-gray-500">for major attractions</div>
+        </div>
+        <div class="bg-gray-50 rounded-lg p-4">
+          <div class="text-sm text-gray-500 mb-1">Express Pass</div>
+          <div class="text-2xl font-bold text-gray-900" x-text="selectedDay ? getExpressRecommendation(selectedDay.crowd) : ''"></div>
+          <div class="text-sm text-gray-500">recommendation</div>
+        </div>
+      </div>
+
+      <!-- Events -->
+      <div x-show="selectedDay && selectedDay.events && selectedDay.events.length > 0">
+        <h3 class="font-semibold text-gray-900 mb-2">Special Events & Factors</h3>
+        <div class="flex flex-wrap gap-2">
+          <template x-for="event in (selectedDay ? selectedDay.events : [])" :key="event">
+            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm" x-text="event"></span>
+          </template>
+        </div>
+      </div>
+
+      <!-- Tips for the day -->
+      <div class="mt-4 p-4 bg-blue-50 rounded-lg">
+        <h3 class="font-semibold text-blue-900 mb-2">Tips for This Day</h3>
+        <ul class="space-y-1 text-sm text-blue-800">
+          <template x-for="tip in (selectedDay ? getDayTips(selectedDay.crowd) : [])" :key="tip">
+            <li class="flex items-start">
+              <span class="text-blue-500 mr-2">•</span>
+              <span x-text="tip"></span>
+            </li>
+          </template>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Monthly Summary -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Monthly Summary</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="text-center p-4 bg-green-50 rounded-lg">
+          <div class="text-3xl font-bold text-green-600" x-text="bestDaysCount"></div>
+          <div class="text-sm text-green-700">Best Days (1-3)</div>
+        </div>
+        <div class="text-center p-4 bg-yellow-50 rounded-lg">
+          <div class="text-3xl font-bold text-yellow-600" x-text="moderateDaysCount"></div>
+          <div class="text-sm text-yellow-700">Moderate Days (4-6)</div>
+        </div>
+        <div class="text-center p-4 bg-red-50 rounded-lg">
+          <div class="text-3xl font-bold text-red-600" x-text="busyDaysCount"></div>
+          <div class="text-sm text-red-700">Busy Days (7-10)</div>
+        </div>
+      </div>
+
+      <div class="bg-gray-50 rounded-lg p-4">
+        <h3 class="font-semibold text-gray-900 mb-2">Best Days This Month</h3>
+        <p class="text-gray-600" x-text="bestDaysText"></p>
+      </div>
+    </section>
+
+    <!-- General Tips -->
+    <section class="bg-gray-50 rounded-xl p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Crowd Calendar Tips</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-2">Understanding Crowd Levels</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <span class="text-green-500 mr-2 font-bold">1-3:</span>
+              Walk-on to 20 min waits. Best experience.
+            </li>
+            <li class="flex items-start">
+              <span class="text-yellow-500 mr-2 font-bold">4-6:</span>
+              20-45 min waits. Comfortable with strategy.
+            </li>
+            <li class="flex items-start">
+              <span class="text-orange-500 mr-2 font-bold">7-8:</span>
+              45-90 min waits. Express Pass recommended.
+            </li>
+            <li class="flex items-start">
+              <span class="text-red-600 mr-2 font-bold">9-10:</span>
+              90+ min waits. Very challenging day.
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-2">What Drives Crowds</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              School holidays (US, UK, Brazil)
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Special events (Halloween, Christmas)
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              New attraction openings
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Weather patterns and seasons
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Day of week (weekends busier)
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>
+
+<script>
+function crowdCalendar() {
+  return {
+    selectedPark: 'disney-magic',
+    currentMonth: new Date().getMonth(),
+    currentYear: new Date().getFullYear(),
+    selectedDay: null,
+
+    parks: [
+      { id: 'disney-magic', name: 'Magic Kingdom' },
+      { id: 'disney-epcot', name: 'EPCOT' },
+      { id: 'disney-hollywood', name: 'Hollywood Studios' },
+      { id: 'disney-animal', name: 'Animal Kingdom' },
+      { id: 'universal-orlando', name: 'Universal Orlando' },
+      { id: 'universal-epic', name: 'Epic Universe' },
+      { id: 'disneyland', name: 'Disneyland' },
+      { id: 'six-flags', name: 'Six Flags' }
+    ],
+
+    // Base crowd patterns by month (1-10 scale)
+    monthlyBase: {
+      0: 4,  // January - post-holiday lull
+      1: 3,  // February - low season
+      2: 6,  // March - spring break
+      3: 7,  // April - spring break + Easter
+      4: 5,  // May - moderate
+      5: 7,  // June - summer starts
+      6: 8,  // July - peak summer
+      7: 7,  // August - summer
+      8: 4,  // September - low season
+      9: 6,  // October - Halloween
+      10: 5, // November - moderate until Thanksgiving
+      11: 7  // December - holidays
+    },
+
+    // Day of week modifiers
+    dayModifiers: {
+      0: 1,  // Sunday
+      1: -2, // Monday
+      2: -2, // Tuesday
+      3: -1, // Wednesday
+      4: 0,  // Thursday
+      5: 1,  // Friday
+      6: 2   // Saturday
+    },
+
+    // Special events/dates that affect crowds
+    specialDates: {
+      '2025-01-01': { mod: 4, events: ['New Year\'s Day'] },
+      '2025-01-20': { mod: 2, events: ['MLK Weekend'] },
+      '2025-02-14': { mod: 1, events: ['Valentine\'s Day'] },
+      '2025-02-17': { mod: 2, events: ['Presidents Day Weekend'] },
+      '2025-03-17': { mod: 1, events: ['St. Patrick\'s Day'] },
+      '2025-04-20': { mod: 3, events: ['Easter Sunday'] },
+      '2025-05-22': { mod: 4, events: ['Epic Universe Opening!'] },
+      '2025-05-26': { mod: 3, events: ['Memorial Day Weekend'] },
+      '2025-07-04': { mod: 3, events: ['Independence Day'] },
+      '2025-09-01': { mod: 2, events: ['Labor Day Weekend'] },
+      '2025-10-31': { mod: 3, events: ['Halloween'] },
+      '2025-11-27': { mod: 4, events: ['Thanksgiving'] },
+      '2025-12-25': { mod: 5, events: ['Christmas Day'] },
+      '2025-12-31': { mod: 5, events: ['New Year\'s Eve'] }
+    },
+
+    get monthYearDisplay() {
+      const date = new Date(this.currentYear, this.currentMonth, 1);
+      return date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+    },
+
+    get calendarDays() {
+      const days = [];
+      const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+      const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
+      const startPadding = firstDay.getDay();
+      const totalDays = lastDay.getDate();
+
+      // Previous month padding
+      const prevMonth = new Date(this.currentYear, this.currentMonth, 0);
+      for (let i = startPadding - 1; i >= 0; i--) {
+        const dayNum = prevMonth.getDate() - i;
+        days.push({
+          date: `${this.currentYear}-${String(this.currentMonth).padStart(2, '0')}-${String(dayNum).padStart(2, '0')}`,
+          dayNum,
+          inMonth: false,
+          crowd: 0
+        });
+      }
+
+      // Current month
+      for (let i = 1; i <= totalDays; i++) {
+        const dateStr = `${this.currentYear}-${String(this.currentMonth + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+        const date = new Date(this.currentYear, this.currentMonth, i);
+        const crowd = this.calculateCrowd(date, dateStr);
+        const special = this.specialDates[dateStr];
+
+        days.push({
+          date: dateStr,
+          dayNum: i,
+          inMonth: true,
+          crowd,
+          events: special ? special.events : []
+        });
+      }
+
+      // Next month padding
+      const remaining = 42 - days.length;
+      for (let i = 1; i <= remaining; i++) {
+        days.push({
+          date: `${this.currentYear}-${String(this.currentMonth + 2).padStart(2, '0')}-${String(i).padStart(2, '0')}`,
+          dayNum: i,
+          inMonth: false,
+          crowd: 0
+        });
+      }
+
+      return days;
+    },
+
+    calculateCrowd(date, dateStr) {
+      let base = this.monthlyBase[date.getMonth()];
+      const dayMod = this.dayModifiers[date.getDay()];
+      const special = this.specialDates[dateStr];
+      const specialMod = special ? special.mod : 0;
+
+      // Add some variation based on week of month
+      const weekOfMonth = Math.ceil(date.getDate() / 7);
+      const weekMod = weekOfMonth === 1 || weekOfMonth === 4 ? 1 : 0;
+
+      let crowd = base + dayMod + specialMod + weekMod;
+
+      // Clamp to 1-10
+      return Math.max(1, Math.min(10, crowd));
+    },
+
+    previousMonth() {
+      if (this.currentMonth === 0) {
+        this.currentMonth = 11;
+        this.currentYear--;
+      } else {
+        this.currentMonth--;
+      }
+      this.selectedDay = null;
+    },
+
+    nextMonth() {
+      if (this.currentMonth === 11) {
+        this.currentMonth = 0;
+        this.currentYear++;
+      } else {
+        this.currentMonth++;
+      }
+      this.selectedDay = null;
+    },
+
+    selectDay(day) {
+      this.selectedDay = day;
+    },
+
+    getCrowdClass(crowd) {
+      if (crowd <= 3) return 'bg-green-500';
+      if (crowd <= 6) return 'bg-yellow-500';
+      if (crowd <= 8) return 'bg-orange-500';
+      return 'bg-red-600';
+    },
+
+    getCrowdTextClass(crowd) {
+      if (crowd <= 3) return 'text-green-600';
+      if (crowd <= 6) return 'text-yellow-600';
+      if (crowd <= 8) return 'text-orange-600';
+      return 'text-red-600';
+    },
+
+    getCrowdLabel(crowd) {
+      if (crowd <= 3) return 'Low Crowds';
+      if (crowd <= 6) return 'Moderate Crowds';
+      if (crowd <= 8) return 'High Crowds';
+      return 'Extreme Crowds';
+    },
+
+    getWaitTimes(crowd) {
+      if (crowd <= 3) return '5-25 min';
+      if (crowd <= 6) return '25-50 min';
+      if (crowd <= 8) return '50-90 min';
+      return '90+ min';
+    },
+
+    getExpressRecommendation(crowd) {
+      if (crowd <= 3) return 'Skip it';
+      if (crowd <= 6) return 'Optional';
+      if (crowd <= 8) return 'Recommended';
+      return 'Essential';
+    },
+
+    getDayTips(crowd) {
+      if (crowd <= 3) {
+        return [
+          'Arrive at rope drop for walk-on rides',
+          'Express Pass likely not needed today',
+          'Great day to re-ride favorites',
+          'Take time to explore details and theming'
+        ];
+      }
+      if (crowd <= 6) {
+        return [
+          'Arrive 30 minutes before opening',
+          'Hit major attractions first',
+          'Single rider lines can save time',
+          'Book dining reservations in advance'
+        ];
+      }
+      if (crowd <= 8) {
+        return [
+          'Arrive 45+ minutes before opening',
+          'Consider Express Pass for key rides',
+          'Use parade/show times for shorter waits',
+          'Take midday break if staying late'
+        ];
+      }
+      return [
+        'Arrive 60+ minutes before opening',
+        'Express Pass strongly recommended',
+        'Have a clear priority list',
+        'Consider if this day is worth the crowds'
+      ];
+    },
+
+    formatDate(dateStr) {
+      const date = new Date(dateStr + 'T12:00:00');
+      return date.toLocaleDateString('en-US', {
+        weekday: 'long',
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric'
+      });
+    },
+
+    get bestDaysCount() {
+      return this.calendarDays.filter(d => d.inMonth && d.crowd <= 3).length;
+    },
+
+    get moderateDaysCount() {
+      return this.calendarDays.filter(d => d.inMonth && d.crowd >= 4 && d.crowd <= 6).length;
+    },
+
+    get busyDaysCount() {
+      return this.calendarDays.filter(d => d.inMonth && d.crowd >= 7).length;
+    },
+
+    get bestDaysText() {
+      const best = this.calendarDays
+        .filter(d => d.inMonth && d.crowd <= 3)
+        .map(d => d.dayNum);
+
+      if (best.length === 0) return 'No low-crowd days this month. Consider visiting on weekdays for lower crowds.';
+      if (best.length > 10) return `Most weekdays are excellent this month (${best.slice(0, 5).join(', ')}...). Great time to visit!`;
+      return `Best days: ${best.join(', ')}. Plan your visit around these dates for shortest waits.`;
+    }
+  };
+}
+</script>
