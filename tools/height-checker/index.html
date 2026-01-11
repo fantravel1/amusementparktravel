@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Primary Meta Tags -->
+  <title>Theme Park Height Checker - What Can Your Kids Ride? | Amusement Park Travel</title>
+  <meta name="title" content="Theme Park Height Checker - What Can Your Kids Ride? | Amusement Park Travel">
+  <meta name="description" content="Enter your child&#39;s height to see which rides they can enjoy at Universal, Disney, Six Flags, and other major theme parks. Plan ahead and avoid disappointment.">
+  <meta name="author" content="Amusement Park Travel">
+  <meta name="robots" content="index, follow">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://amusementparktravel.com/tools/height-checker/">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://amusementparktravel.com/tools/height-checker/">
+  <meta property="og:title" content="Theme Park Height Checker - What Can Your Kids Ride?">
+  <meta property="og:description" content="Enter your child&#39;s height to see which rides they can enjoy at Universal, Disney, Six Flags, and other major theme parks. Plan ahead and avoid disappointment.">
+  <meta property="og:image" content="https://amusementparktravel.com/assets/images/og/default.jpg">
+  <meta property="og:site_name" content="Amusement Park Travel">
+  <meta property="og:locale" content="en_US">
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@parktravel">
+  <meta name="twitter:url" content="https://amusementparktravel.com/tools/height-checker/">
+  <meta name="twitter:title" content="Theme Park Height Checker - What Can Your Kids Ride?">
+  <meta name="twitter:description" content="Enter your child&#39;s height to see which rides they can enjoy at Universal, Disney, Six Flags, and other major theme parks. Plan ahead and avoid disappointment.">
+  <meta name="twitter:image" content="https://amusementparktravel.com/assets/images/og/default.jpg">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="/assets/images/icons/favicon.svg">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/images/icons/apple-touch-icon.png">
+
+  <!-- Preconnect to important origins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
+
+  <!-- JSON-LD Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Amusement Park Travel",
+    "url": "https://amusementparktravel.com",
+    "logo": "https://amusementparktravel.com/assets/images/logo.svg",
+    "description": "The world&#39;s most comprehensive amusement park travel planning resource. Expert guides, interactive tools, and insider tips for theme parks worldwide.",
+    "sameAs": [
+      "https://twitter.com/parktravel",
+      "https://instagram.com/amusementparktravel",
+      "https://facebook.com/amusementparktravel"
+    ]
+  }
+  </script>
+
+  
+
+  <!-- WebSite schema for sitelinks search box -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "url": "https://amusementparktravel.com",
+    "name": "Amusement Park Travel",
+    "description": "The world&#39;s most comprehensive amusement park travel planning resource. Expert guides, interactive tools, and insider tips for theme parks worldwide.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://amusementparktravel.com/search/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="nav">
+  <div class="nav-container">
+    <!-- Logo -->
+    <a href="/" class="nav-logo">
+      <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" fill="none"/>
+        <path d="M8 20 L12 8 L16 16 L20 8 L24 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="16" cy="22" r="2" fill="currentColor"/>
+      </svg>
+      <span class="hidden sm:inline">AmusementParkTravel</span>
+      <span class="sm:hidden">APT</span>
+    </a>
+
+    <!-- Desktop Navigation -->
+    <nav class="nav-links" aria-label="Main navigation">
+      
+        <a href="/parks/" class="nav-link ">
+          Parks
+        </a>
+      
+        <a href="/guides/" class="nav-link ">
+          Guides
+        </a>
+      
+        <a href="/tools/" class="nav-link ">
+          Tools
+        </a>
+      
+        <a href="/comparisons/" class="nav-link ">
+          Compare
+        </a>
+      
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-toggle"
+      class="md:hidden p-2 text-gray-600 hover:text-primary-600"
+      aria-label="Toggle menu"
+      aria-expanded="false"
+    >
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="mobile-menu">
+    <div class="p-4 border-b border-gray-200 flex items-center justify-between">
+      <a href="/" class="nav-logo">
+        <svg class="w-8 h-8" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M8 20 L12 8 L16 16 L20 8 L24 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="16" cy="22" r="2" fill="currentColor"/>
+        </svg>
+        <span>AmusementParkTravel</span>
+      </a>
+      <button
+        id="mobile-menu-close"
+        class="p-2 text-gray-600"
+        aria-label="Close menu"
+        onclick="document.getElementById('mobile-menu').classList.remove('open'); document.body.classList.remove('overflow-hidden');"
+      >
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+    <nav class="p-4 space-y-4" aria-label="Mobile navigation">
+      
+        <div>
+          <a
+            href="/parks/"
+            class="block py-2 text-lg font-semibold text-gray-900 hover:text-primary-600"
+          >
+            Parks
+          </a>
+          
+            <div class="pl-4 space-y-2 mt-2">
+              
+                <a
+                  href="/parks/north-america/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  North America
+                </a>
+              
+                <a
+                  href="/parks/europe/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Europe
+                </a>
+              
+                <a
+                  href="/parks/asia/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Asia
+                </a>
+              
+                <a
+                  href="/parks/south-america/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  South America
+                </a>
+              
+                <a
+                  href="/parks/middle-east/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Middle East
+                </a>
+              
+            </div>
+          
+        </div>
+      
+        <div>
+          <a
+            href="/guides/"
+            class="block py-2 text-lg font-semibold text-gray-900 hover:text-primary-600"
+          >
+            Guides
+          </a>
+          
+            <div class="pl-4 space-y-2 mt-2">
+              
+                <a
+                  href="/guides/first-timers/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  First-Timer Guides
+                </a>
+              
+                <a
+                  href="/guides/budget/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Budget Tips
+                </a>
+              
+                <a
+                  href="/guides/families/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Family Planning
+                </a>
+              
+                <a
+                  href="/guides/seasonal/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Seasonal Events
+                </a>
+              
+            </div>
+          
+        </div>
+      
+        <div>
+          <a
+            href="/tools/"
+            class="block py-2 text-lg font-semibold text-gray-900 hover:text-primary-600"
+          >
+            Tools
+          </a>
+          
+            <div class="pl-4 space-y-2 mt-2">
+              
+                <a
+                  href="/tools/budget-calculator/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Budget Calculator
+                </a>
+              
+                <a
+                  href="/tools/crowd-calendar/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Crowd Calendar
+                </a>
+              
+                <a
+                  href="/tools/height-checker/"
+                  class="block py-1 text-gray-600 hover:text-primary-600"
+                >
+                  Height Checker
+                </a>
+              
+            </div>
+          
+        </div>
+      
+        <div>
+          <a
+            href="/comparisons/"
+            class="block py-2 text-lg font-semibold text-gray-900 hover:text-primary-600"
+          >
+            Compare
+          </a>
+          
+        </div>
+      
+    </nav>
+  </div>
+</header>
+
+
+  <main id="main-content" class="flex-grow">
+    
+<main class="container mx-auto px-4 py-8 max-w-4xl">
+  <nav class="text-sm mb-6" aria-label="Breadcrumb">
+    <ol class="flex items-center space-x-2 text-gray-600">
+      <li><a href="/" class="hover:text-primary">Home</a></li>
+      <li>/</li>
+      <li><a href="/tools/" class="hover:text-primary">Tools</a></li>
+      <li>/</li>
+      <li class="text-gray-900">Height Checker</li>
+    </ol>
+  </nav>
+
+  <article x-data="heightChecker()">
+    <header class="mb-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Theme Park Height Checker</h1>
+      <p class="text-lg text-gray-600">Find out which attractions your child can ride before you visit. Enter their height and select a park to see a personalized list.</p>
+    </header>
+
+    <!-- Height Input -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Enter Height</h2>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">Measurement System</label>
+          <div class="flex space-x-4">
+            <button @click="unit = 'inches'" :class="unit === 'inches' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'" class="px-4 py-2 rounded-lg font-medium transition">
+              Inches
+            </button>
+            <button @click="unit = 'cm'" :class="unit === 'cm' ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700'" class="px-4 py-2 rounded-lg font-medium transition">
+              Centimeters
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">
+            Child's Height (<span x-text="unit === 'inches' ? 'inches' : 'cm'"></span>)
+          </label>
+          <div class="flex items-center space-x-4">
+            <input type="range" x-model="height" :min="unit === 'inches' ? 30 : 75" :max="unit === 'inches' ? 60 : 152" class="flex-1">
+            <input type="number" x-model.number="height" :min="unit === 'inches' ? 30 : 75" :max="unit === 'inches' ? 60 : 152" class="w-20 px-3 py-2 border border-gray-300 rounded-lg text-center">
+          </div>
+          <p class="text-sm text-gray-500 mt-2">
+            <span x-text="unit === 'inches' ? heightInCm + ' cm' : heightInInches + ' inches'"></span>
+            (<span x-text="heightInFeetInches"></span>)
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Park Selection -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Select Park</h2>
+
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <template x-for="park in parks" :key="park.id">
+          <button @click="selectedPark = park.id" :class="selectedPark === park.id ? 'bg-primary text-white border-primary' : 'bg-white text-gray-700 border-gray-300 hover:border-primary'" class="px-4 py-3 rounded-lg border-2 font-medium text-sm transition text-center">
+            <span x-text="park.name"></span>
+          </button>
+        </template>
+      </div>
+    </section>
+
+    <!-- Results Summary -->
+    <section class="bg-gradient-to-br from-primary to-red-700 rounded-xl shadow-lg p-6 mb-6 text-white">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-xl font-bold">Results for <span x-text="heightDisplay"></span></h2>
+        <div class="text-right">
+          <div class="text-3xl font-bold" x-text="canRideCount + '/' + currentParkRides.length"></div>
+          <div class="text-sm opacity-90">Attractions Available</div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-3 gap-4">
+        <div class="bg-white/20 rounded-lg p-3 text-center">
+          <div class="text-2xl font-bold text-green-300" x-text="canRideCount"></div>
+          <div class="text-xs">Can Ride</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-3 text-center">
+          <div class="text-2xl font-bold text-yellow-300" x-text="almostCount"></div>
+          <div class="text-xs">Almost (within 2")</div>
+        </div>
+        <div class="bg-white/20 rounded-lg p-3 text-center">
+          <div class="text-2xl font-bold text-red-300" x-text="cantRideCount"></div>
+          <div class="text-xs">Too Short</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Attraction Lists -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+      <!-- Can Ride -->
+      <section class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-lg font-bold text-green-600 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+          </svg>
+          Can Ride (<span x-text="canRideCount"></span>)
+        </h2>
+        <ul class="space-y-2 max-h-80 overflow-y-auto">
+          <template x-for="ride in canRideList" :key="ride.name">
+            <li class="flex items-center justify-between py-2 border-b border-gray-100">
+              <span class="font-medium" x-text="ride.name"></span>
+              <span class="text-sm text-gray-500" x-text="ride.requirement === 0 ? 'Any height' : formatHeight(ride.requirement) + ' min'"></span>
+            </li>
+          </template>
+          <li x-show="canRideList.length === 0" class="text-gray-500 italic">No attractions at this height</li>
+        </ul>
+      </section>
+
+      <!-- Almost There -->
+      <section class="bg-white rounded-xl shadow-lg p-6">
+        <h2 class="text-lg font-bold text-yellow-600 mb-4 flex items-center">
+          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+          </svg>
+          Almost There (<span x-text="almostCount"></span>)
+        </h2>
+        <ul class="space-y-2 max-h-80 overflow-y-auto">
+          <template x-for="ride in almostList" :key="ride.name">
+            <li class="flex items-center justify-between py-2 border-b border-gray-100">
+              <div>
+                <span class="font-medium" x-text="ride.name"></span>
+                <span class="text-xs text-yellow-600 block" x-text="'Needs ' + formatHeight(ride.requirement - heightInInches) + ' more'"></span>
+              </div>
+              <span class="text-sm text-gray-500" x-text="formatHeight(ride.requirement) + ' min'"></span>
+            </li>
+          </template>
+          <li x-show="almostList.length === 0" class="text-gray-500 italic">No attractions in this range</li>
+        </ul>
+      </section>
+    </div>
+
+    <!-- Can't Ride Yet -->
+    <section class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-lg font-bold text-red-600 mb-4 flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+        Not Yet (<span x-text="cantRideCount"></span>)
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 max-h-60 overflow-y-auto">
+        <template x-for="ride in cantRideList" :key="ride.name">
+          <div class="flex items-center justify-between py-2 px-3 bg-red-50 rounded-lg">
+            <span class="text-sm" x-text="ride.name"></span>
+            <span class="text-xs text-red-600" x-text="formatHeight(ride.requirement)"></span>
+          </div>
+        </template>
+      </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="bg-gray-50 rounded-xl p-6">
+      <h2 class="text-xl font-bold text-gray-900 mb-4">Height Requirement Tips</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-2">Before You Go</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Measure your child at home in their park shoes
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Heights are measured in shoes at most parks
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Some parks offer height wristbands at entrance
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Requirements can change — verify day-of
+            </li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-semibold text-gray-900 mb-2">At the Park</h3>
+          <ul class="space-y-2 text-sm text-gray-600">
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Use "Rider Switch" so adults can take turns
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Check height at ride entrance before full queue
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Don't argue with cast members — it's for safety
+            </li>
+            <li class="flex items-start">
+              <span class="text-primary mr-2">•</span>
+              Plan backup attractions for "almost there" rides
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </article>
+</main>
+
+<script>
+function heightChecker() {
+  return {
+    unit: 'inches',
+    height: 42,
+    selectedPark: 'universal-orlando',
+
+    parks: [
+      { id: 'universal-orlando', name: 'Universal Orlando' },
+      { id: 'universal-epic', name: 'Epic Universe' },
+      { id: 'disney-magic', name: 'Magic Kingdom' },
+      { id: 'disney-hollywood', name: 'Hollywood Studios' },
+      { id: 'disney-epcot', name: 'EPCOT' },
+      { id: 'disney-animal', name: 'Animal Kingdom' },
+      { id: 'six-flags-magic', name: 'Six Flags Magic Mountain' },
+      { id: 'cedar-point', name: 'Cedar Point' }
+    ],
+
+    // Height requirements in inches
+    rideData: {
+      'universal-orlando': [
+        { name: 'Hagrid\'s Magical Creatures', requirement: 48 },
+        { name: 'VelociCoaster', requirement: 51 },
+        { name: 'Hagrid\'s Magical Creatures', requirement: 48 },
+        { name: 'Incredible Hulk Coaster', requirement: 54 },
+        { name: 'Hollywood Rip Ride Rockit', requirement: 51 },
+        { name: 'Revenge of the Mummy', requirement: 48 },
+        { name: 'Harry Potter Forbidden Journey', requirement: 48 },
+        { name: 'Escape from Gringotts', requirement: 42 },
+        { name: 'Men in Black', requirement: 42 },
+        { name: 'Transformers', requirement: 40 },
+        { name: 'Fast & Furious', requirement: 40 },
+        { name: 'Simpsons Ride', requirement: 40 },
+        { name: 'Hogwarts Express', requirement: 0 },
+        { name: 'E.T. Adventure', requirement: 34 },
+        { name: 'Cat in the Hat', requirement: 36 },
+        { name: 'Flight of the Hippogriff', requirement: 36 },
+        { name: 'Despicable Me', requirement: 40 }
+      ],
+      'universal-epic': [
+        { name: 'Stardust Racers', requirement: 48 },
+        { name: 'Monsters Unchained', requirement: 48 },
+        { name: 'Curse of the Werewolf', requirement: 42 },
+        { name: 'Dragon Racer\'s Rally', requirement: 48 },
+        { name: 'Mario Kart: Bowser\'s Challenge', requirement: 40 },
+        { name: 'Mine-Cart Madness', requirement: 40 },
+        { name: 'Battle at the Ministry', requirement: 42 },
+        { name: 'Yoshi\'s Adventure', requirement: 34 },
+        { name: 'Hiccup\'s Wing Gliders', requirement: 40 },
+        { name: 'Constellation Carousel', requirement: 0 }
+      ],
+      'disney-magic': [
+        { name: 'TRON Lightcycle Run', requirement: 48 },
+        { name: 'Space Mountain', requirement: 44 },
+        { name: 'Big Thunder Mountain', requirement: 40 },
+        { name: 'Splash Mountain', requirement: 40 },
+        { name: 'Seven Dwarfs Mine Train', requirement: 38 },
+        { name: 'Tomorrowland Speedway', requirement: 32 },
+        { name: 'Barnstormer', requirement: 35 },
+        { name: 'Pirates of the Caribbean', requirement: 0 },
+        { name: 'Haunted Mansion', requirement: 0 },
+        { name: 'Jungle Cruise', requirement: 0 },
+        { name: 'It\'s a Small World', requirement: 0 },
+        { name: 'Peter Pan\'s Flight', requirement: 0 },
+        { name: 'Buzz Lightyear', requirement: 0 }
+      ],
+      'disney-hollywood': [
+        { name: 'Tower of Terror', requirement: 40 },
+        { name: 'Rock \'n\' Roller Coaster', requirement: 48 },
+        { name: 'Slinky Dog Dash', requirement: 38 },
+        { name: 'Millennium Falcon', requirement: 38 },
+        { name: 'Rise of the Resistance', requirement: 40 },
+        { name: 'Alien Swirling Saucers', requirement: 32 },
+        { name: 'Toy Story Mania', requirement: 0 },
+        { name: 'Mickey & Minnie\'s Runaway Railway', requirement: 0 }
+      ],
+      'disney-epcot': [
+        { name: 'Guardians of the Galaxy', requirement: 42 },
+        { name: 'Test Track', requirement: 40 },
+        { name: 'Mission: SPACE (Orange)', requirement: 44 },
+        { name: 'Mission: SPACE (Green)', requirement: 40 },
+        { name: 'Soarin\'', requirement: 40 },
+        { name: 'Frozen Ever After', requirement: 0 },
+        { name: 'Remy\'s Ratatouille', requirement: 0 },
+        { name: 'Spaceship Earth', requirement: 0 },
+        { name: 'Living with the Land', requirement: 0 }
+      ],
+      'disney-animal': [
+        { name: 'Avatar Flight of Passage', requirement: 44 },
+        { name: 'Expedition Everest', requirement: 44 },
+        { name: 'Dinosaur', requirement: 40 },
+        { name: 'Kali River Rapids', requirement: 38 },
+        { name: 'Na\'vi River Journey', requirement: 0 },
+        { name: 'Kilimanjaro Safaris', requirement: 0 }
+      ],
+      'six-flags-magic': [
+        { name: 'X2', requirement: 48 },
+        { name: 'Twisted Colossus', requirement: 48 },
+        { name: 'Tatsu', requirement: 54 },
+        { name: 'Full Throttle', requirement: 48 },
+        { name: 'Goliath', requirement: 48 },
+        { name: 'Superman: Escape', requirement: 48 },
+        { name: 'Batman: The Ride', requirement: 54 },
+        { name: 'Riddler\'s Revenge', requirement: 54 },
+        { name: 'West Coast Racers', requirement: 48 },
+        { name: 'Wonder Woman', requirement: 48 },
+        { name: 'Viper', requirement: 54 },
+        { name: 'Revolution', requirement: 48 },
+        { name: 'Apocalypse', requirement: 48 },
+        { name: 'Gold Rusher', requirement: 46 },
+        { name: 'Ninja', requirement: 42 },
+        { name: 'Road Runner Express', requirement: 36 },
+        { name: 'Speedy Gonzales', requirement: 36 }
+      ],
+      'cedar-point': [
+        { name: 'Steel Vengeance', requirement: 52 },
+        { name: 'Millennium Force', requirement: 48 },
+        { name: 'Top Thrill 2', requirement: 52 },
+        { name: 'Maverick', requirement: 52 },
+        { name: 'Valravn', requirement: 52 },
+        { name: 'Gatekeeper', requirement: 52 },
+        { name: 'Raptor', requirement: 54 },
+        { name: 'Magnum XL-200', requirement: 48 },
+        { name: 'Gemini', requirement: 48 },
+        { name: 'Blue Streak', requirement: 48 },
+        { name: 'Rougarou', requirement: 54 },
+        { name: 'Corkscrew', requirement: 48 },
+        { name: 'Iron Dragon', requirement: 46 },
+        { name: 'Mine Ride', requirement: 48 },
+        { name: 'Woodstock Express', requirement: 40 },
+        { name: 'Wilderness Run', requirement: 36 }
+      ]
+    },
+
+    get heightInInches() {
+      if (this.unit === 'inches') return this.height;
+      return Math.round(this.height / 2.54);
+    },
+
+    get heightInCm() {
+      if (this.unit === 'cm') return this.height;
+      return Math.round(this.height * 2.54);
+    },
+
+    get heightInFeetInches() {
+      const inches = this.heightInInches;
+      const feet = Math.floor(inches / 12);
+      const remainingInches = inches % 12;
+      return `${feet}'${remainingInches}"`;
+    },
+
+    get heightDisplay() {
+      return this.unit === 'inches'
+        ? `${this.height}" (${this.heightInFeetInches})`
+        : `${this.height} cm (${this.heightInFeetInches})`;
+    },
+
+    get currentParkRides() {
+      return this.rideData[this.selectedPark] || [];
+    },
+
+    get canRideList() {
+      return this.currentParkRides
+        .filter(ride => this.heightInInches >= ride.requirement)
+        .sort((a, b) => b.requirement - a.requirement);
+    },
+
+    get almostList() {
+      return this.currentParkRides
+        .filter(ride => {
+          const diff = ride.requirement - this.heightInInches;
+          return diff > 0 && diff <= 2;
+        })
+        .sort((a, b) => a.requirement - b.requirement);
+    },
+
+    get cantRideList() {
+      return this.currentParkRides
+        .filter(ride => ride.requirement - this.heightInInches > 2)
+        .sort((a, b) => a.requirement - b.requirement);
+    },
+
+    get canRideCount() {
+      return this.canRideList.length;
+    },
+
+    get almostCount() {
+      return this.almostList.length;
+    },
+
+    get cantRideCount() {
+      return this.cantRideList.length;
+    },
+
+    formatHeight(inches) {
+      if (inches < 0) return '0"';
+      if (this.unit === 'cm') {
+        return Math.round(inches * 2.54) + ' cm';
+      }
+      if (inches >= 12) {
+        const feet = Math.floor(inches / 12);
+        const remaining = inches % 12;
+        return remaining > 0 ? `${feet}'${remaining}"` : `${feet}'`;
+      }
+      return `${inches}"`;
+    }
+  };
+}
+</script>
+
+  </main>
+
+  <footer class="footer">
+  <div class="container">
+    <div class="footer-grid mb-12">
+      <!-- Parks -->
+      <div>
+        <h3 class="footer-title">Popular Parks</h3>
+        <ul class="footer-links">
+          
+            <li><a href="/parks/north-america/universal-epic-universe/" class="footer-link">Universal Epic Universe</a></li>
+          
+            <li><a href="/parks/middle-east/six-flags-qiddiya/" class="footer-link">Six Flags Qiddiya</a></li>
+          
+            <li><a href="/parks/europe/phantasialand/" class="footer-link">Phantasialand</a></li>
+          
+            <li><a href="/parks/south-america/beto-carrero-world/" class="footer-link">Beto Carrero World</a></li>
+          
+        </ul>
+      </div>
+
+      <!-- Tools -->
+      <div>
+        <h3 class="footer-title">Planning Tools</h3>
+        <ul class="footer-links">
+          
+            <li><a href="/tools/budget-calculator/" class="footer-link">Budget Calculator</a></li>
+          
+            <li><a href="/tools/crowd-calendar/" class="footer-link">Crowd Calendar</a></li>
+          
+            <li><a href="/tools/height-checker/" class="footer-link">Height Checker</a></li>
+          
+            <li><a href="/tools/express-pass-calculator/" class="footer-link">Express Pass ROI</a></li>
+          
+        </ul>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h3 class="footer-title">Resources</h3>
+        <ul class="footer-links">
+          
+            <li><a href="/guides/rain-policies/" class="footer-link">Rain Policies Guide</a></li>
+          
+            <li><a href="/guides/best-time-to-visit/" class="footer-link">Best Time to Visit</a></li>
+          
+            <li><a href="/guides/travel-tips/" class="footer-link">Travel Tips</a></li>
+          
+            <li><a href="/feeds/rss.xml" class="footer-link">RSS Feed</a></li>
+          
+        </ul>
+      </div>
+
+      <!-- Company -->
+      <div>
+        <h3 class="footer-title">Company</h3>
+        <ul class="footer-links">
+          
+            <li><a href="/about/" class="footer-link">About Us</a></li>
+          
+            <li><a href="/contact/" class="footer-link">Contact</a></li>
+          
+            <li><a href="/privacy/" class="footer-link">Privacy Policy</a></li>
+          
+            <li><a href="/terms/" class="footer-link">Terms of Use</a></li>
+          
+        </ul>
+      </div>
+    </div>
+
+    <!-- Newsletter Signup -->
+    <div class="bg-gray-800 rounded-xl p-6 md:p-8 mb-12">
+      <div class="md:flex md:items-center md:justify-between">
+        <div class="mb-4 md:mb-0">
+          <h3 class="text-white font-bold text-lg mb-1">Get Park Updates & Deals</h3>
+          <p class="text-gray-400 text-sm">Weekly tips, new park coverage, and exclusive planning guides.</p>
+        </div>
+        <form class="flex gap-2" action="#" method="POST">
+          <input
+            type="email"
+            placeholder="Your email"
+            required
+            class="flex-1 md:w-64 px-4 py-2 rounded-lg bg-gray-700 text-white placeholder-gray-400 border border-gray-600 focus:border-primary-500 focus:outline-none"
+          >
+          <button type="submit" class="btn btn-primary whitespace-nowrap">
+            Subscribe
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Bottom -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-8 border-t border-gray-800">
+      <div class="flex items-center gap-2">
+        <svg class="w-6 h-6 text-primary-500" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="16" cy="16" r="14" stroke="currentColor" stroke-width="2" fill="none"/>
+          <path d="M8 20 L12 8 L16 16 L20 8 L24 20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+          <circle cx="16" cy="22" r="2" fill="currentColor"/>
+        </svg>
+        <span class="text-gray-400 text-sm">&copy; 2026 2025 AmusementParkTravel.com. All rights reserved.</span>
+      </div>
+
+      <!-- Social Links -->
+      <div class="flex items-center gap-4">
+        <a href="https://twitter.com/parktravel" class="text-gray-400 hover:text-white transition-colors" aria-label="Twitter">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+        <a href="https://instagram.com/amusementparktravel" class="text-gray-400 hover:text-white transition-colors" aria-label="Instagram">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+          </svg>
+        </a>
+        <a href="https://youtube.com/amusementparktravel" class="text-gray-400 hover:text-white transition-colors" aria-label="YouTube">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+          </svg>
+        </a>
+        <a href="/feeds/rss.xml" class="text-gray-400 hover:text-white transition-colors" aria-label="RSS Feed">
+          <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- Alpine.js for interactivity -->
+  <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  <!-- FAQ Toggle Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // FAQ Accordion
+      document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+          const expanded = button.getAttribute('aria-expanded') === 'true';
+          button.setAttribute('aria-expanded', !expanded);
+          const answer = button.nextElementSibling;
+          answer.classList.toggle('active');
+        });
+      });
+
+      // Mobile menu toggle
+      const menuToggle = document.getElementById('mobile-menu-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', () => {
+          mobileMenu.classList.toggle('open');
+          document.body.classList.toggle('overflow-hidden');
+        });
+      }
+
+      // Smooth scroll for anchor links
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+          e.preventDefault();
+          const target = document.querySelector(this.getAttribute('href'));
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
